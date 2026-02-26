@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lightouch™ Consulting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    .fade-card { opacity: 0; transform: translateY(30px); transition: all 0.7s ease-out; }
+    .fade-card.visible { opacity: 1; transform: translateY(0); }
+    .btn-primary { @apply inline-flex items-center justify-center bg-white-400 text-black font-semibold px-6 py-3 rounded-lg hover:bg-white-500 transition; }
+    .btn-secondary { @apply inline-flex items-center justify-center border border-white-400 text-white-400 px-6 py-3 rounded-lg hover:bg-white-400 hover:text-black transition; }
+  </style>
+</head>
+
+<body class="bg-black text-gray-200 font-sans">
+
+  <!-- Header / Navigation -->
+  <header id="site-header" class="sticky top-0 z-40 bg-black/90 backdrop-blur  transition-shadow">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 group" aria-label="Lightouch.com home">
+          <span class="text-xl font-bold tracking-wide">Lightouch™ Consulting</span>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex space-x-6" aria-label="Primary">
+          <a href="#who" class="hover:text-yellow-400">Who We Are</a>
+          <a href="#what" class="hover:text-yellow-400">What We Do</a>
+          <a href="#methods" class="hover:text-yellow-400">Methods & Tools</a>
+          <a href="#values" class="hover:text-yellow-400">Our Values</a>
+          <a href="#contact" class="hover:text-yellow-400">Contact</a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <button id="menuBtn" class="md:hidden p-2 rounded-lg border border-slate-300 focus-ring" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <nav id="mobileNav" class="md:hidden hidden fixed top-16 left-0 w-full bg-black z-50 border-t border-slate-200" aria-label="Mobile">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <a href="#who" class="py-2">Who We Are</a>
+        <a href="#what" class="py-2">What We Do</a>
+        <a href="#methods" class="py-2">Methods & Tools</a>
+        <a href="#values" class="py-2">Our Values</a>
+        <a href="#contact" class="py-2">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    menuBtn?.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('hidden') === false;
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+
+    // Header shadow on scroll
+    const header = document.getElementById('site-header');
+    const toggleShadow = () => {
+      if (window.scrollY > 4) header.classList.add('shadow-soft');
+      else header.classList.remove('shadow-soft');
+    };
+    toggleShadow();
+    window.addEventListener('scroll', toggleShadow, { passive: true });
+  </script>
+
+  <!-- Hero -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+    <!-- Video Background -->
+    <div class="absolute inset-0 w-full h-full">
+      <video autoplay playsinline loop muted class="w-full h-full object-cover " id="video-bg">
+        <source src="https://assets.codepen.io/319606/tactus-waves-hero-sm.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Hero text -->
+    <div class="relative z-20 text-center ">
+      <h1 class="text-6xl md:text-7xl font-extrabold text-white ">
+        We are the last<br/>consultants you'll need.
+      </h1>
+      <p class="text-xl text-white mt-4 ">
+        GenAI-native, challenger management consultancy for CIOs and technology leaders.
+      </p>
+      <a href="#contact"
+         class="mt-6 inline-block px-6 py-3 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 transition">
+        Let’s talk results
+      </a>
+    </div>
+
+  </section>
+
+  <style>
+    .hero-shadow {
+      text-shadow:
+        1px 1px 4px rgba(0,0,0,0.6),
+        -1px -1px 4px rgba(0,0,0,0.6),
+        1px -1px 4px rgba(0,0,0,0.6),
+        -1px 1px 4px rgba(0,0,0,0.6),
+        0 0 6px rgba(0,0,0,0.7);
+    }
+
+    #video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-position: center;
+      background-size: cover;
+      object-fit: cover;
+      transform: rotate(0deg);
+      opacity: 0;
+      animation: videoSlideIn 15s ease-out forwards;
+      filter: brightness(0.5);
+    }
+
+    @keyframes videoSlideIn {
+      from { transform: rotate(0deg); opacity: 0; }
+      to   { transform: rotate(0deg); opacity: 1; }
+    }
+  </style>
+
+  <style>
+    .hero {
+      position: relative;
+      height: 75vh;
+      border-bottom-right-radius: 15vw;
+      overflow: hidden;
+      background-color: #212121;
+    }
+
+    .gradient-overlay {
+      bottom: 0;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(33,33,33,0) 0%, rgba(33,33,33,1) 50%);
+      z-index: 1;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .blend {
+      mix-blend-mode: difference !important;
+      color: var(--white);
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+
+  <!-- Who We Are -->
+  <section id="who" class="py-20 bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-6 text-center">Who We Are</h2>
+      <div class="grid gap-8 md:grid-cols-3 mb-10">
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-user-tie text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Built for CIOs</h3>
+          <p class="text-gray-400">A new kind of consultancy for technology leaders who expect more from their advisors.</p>
+        </div>
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-robot text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">GenAI + Expertise</h3>
+          <p class="text-gray-400">Tier 1 Consultants + Generative AI to deliver rapid, high-quality results.</p>
+        </div>
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-hand-holding-heart text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Enablement First</h3>
+          <p class="text-gray-400">We leave you fully equipped to keep moving forward, independently.</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="#methods" class="btn-secondary">Discover our story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do -->
+  <section id="what" class="py-20 bg-black">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-8 text-center">What We Do</h2>
+      <p class="text-center text-gray-300 max-w-3xl mx-auto mb-10">
+        Lightouch helps CIOs and technology leaders achieve rapid, high-quality results using GenerativeAI.
+      </p>
+
+      <!-- Services -->
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
+          <i class="fa-solid fa-diagram-project text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Technology & Digital Transformation</h3>
+          <p class="text-gray-400">Roadmaps, transformation programmes, new tech adoption, and project assurance.</p>
+        </div>
+        <div class="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
+          <i class="fa-solid fa-file-signature text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">GenAI-Enabled Delivery</h3>
+          <p class="text-gray-400">Consultant-grade blueprints, strategies and plans — produced faster and to a higher standard.</p>
+        </div>
+        <div class="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
+          <i class="fa-solid fa-bolt text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">GenAI Adoption Support</h3>
+          <p class="text-gray-400">Implementation and enablement for your teams, powered by <span class="font-semibold">Vivet.ai</span>.</p>
+        </div>
+      </div>
+
+      <!-- Method highlight -->
+      <div class="fade-card mt-8 p-6 bg-gray-900 rounded-2xl shadow-lg">
+        <div class="flex items-start gap-4">
+          <i class="fa-solid fa-stopwatch text-white-400 text-3xl"></i>
+          <div>
+            <h4 class="text-lg font-semibold mb-1">The Lightouch Method</h4>
+            <p class="text-gray-400">High-value GenAI use cases identified and deployed in just six weeks.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key benefits -->
+      <div class="mt-10">
+        <h3 class="text-2xl font-bold mb-4 text-center">Key benefits</h3>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div class="fade-card bg-gray-900 rounded-xl p-4 text-center">Faster results</div>
+          <div class="fade-card bg-gray-900 rounded-xl p-4 text-center">Cost savings</div>
+          <div class="fade-card bg-gray-900 rounded-xl p-4 text-center">Independence after delivery</div>
+          <div class="fade-card bg-gray-900 rounded-xl p-4 text-center">Practical, actionable outcomes</div>
+          <div class="fade-card bg-gray-900 rounded-xl p-4 text-center">Direct access to experienced consultants</div>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <a href="#contact" class="btn-primary">Request a demo or consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Methods & Tools -->
+  <section id="methods" class="py-20 bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-8 text-center">Our Methods &amp; Tools</h2>
+      <p class="text-center text-gray-300 max-w-3xl mx-auto mb-10">
+        How we deliver matters as much as what we deliver.
+      </p>
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <!-- Approach -->
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <div class="flex items-start gap-4 mb-4">
+            <i class="fa-solid fa-compass-drafting text-white-400 text-3xl"></i>
+            <h3 class="text-xl font-semibold">Our approach</h3>
+          </div>
+          <ul class="space-y-3 text-gray-300">
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>Alignment with standards: ISO, ITIL, PMI where relevant.</li>
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>Proprietary methods from Tier 1 experience for complex challenges.</li>
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>User-centred, collaborative delivery with stakeholder engagement.</li>
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>Adaptability: every method tailored to your context.</li>
+          </ul>
+        </div>
+
+        <!-- Tools -->
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <div class="flex items-start gap-4 mb-4">
+            <i class="fa-solid fa-toolbox text-white-400 text-3xl"></i>
+            <h3 class="text-xl font-semibold">Our tools</h3>
+          </div>
+          <ul class="space-y-3 text-gray-300">
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i><span class="font-semibold">Vivet.ai</span>: GenAI platform producing consultant-level outputs up to 10× faster.</li>
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>Embedded methods: pre-configured frameworks your team can keep using.</li>
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>Built-in collaboration for stakeholder feedback and engagement.</li>
+            <li><i class="fa-regular fa-circle-check text-white-400 mr-2"></i>Ongoing access: continue using Vivet.ai and our methods independently.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <a href="#contact" class="btn-primary">Find out how we work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Values -->
+  <section id="values" class="py-20 bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-8 text-center">Our Values</h2>
+
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-eye text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Transparency</h3>
+          <p class="text-gray-400">We show you exactly how our methods work and leave you with the tools to use them yourself. <span class="italic">(e.g. every project includes a handover session.)</span></p>
+        </div>
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-lightbulb text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Innovation</h3>
+          <p class="text-gray-400">We harness Generative AI and build custom solutions like Vivet.ai into our work. <span class="italic">(e.g. each engagement leverages the latest AI tools.)</span></p>
+        </div>
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-user-graduate text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Client Enablement</h3>
+          <p class="text-gray-400">We ensure your teams can keep generating value long after we’ve wrapped up. <span class="italic">(e.g. you retain access to our frameworks and platforms.)</span></p>
+        </div>
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg">
+          <i class="fa-solid fa-briefcase text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Professionalism & Experience</h3>
+          <p class="text-gray-400">Led by seasoned Tier 1 consultants. <span class="italic">(e.g. every client gets senior attention.)</span></p>
+        </div>
+        <div class="fade-card p-6 bg-black rounded-2xl shadow-lg md:col-span-2">
+          <i class="fa-solid fa-person-running text-white-400 text-4xl mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2">Adaptability</h3>
+          <p class="text-gray-400">We flex to your needs and move quickly. <span class="italic">(e.g. our approach is tailored for each engagement.)</span></p>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <a href="#contact" class="btn-secondary">Let’s work the right way, together</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-20 bg-black">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-8 text-center">Contact Us</h2>
+
+      <div class="fade-card bg-gray-900 rounded-2xl p-6 mb-10">
+        <p class="text-gray-300 mb-4">
+          We make it easy to get in touch—whether you’re ready to start or just want to know more.
+        </p>
+        <p class="text-gray-300 mb-4">
+          Use the contact form below and we’ll make sure your enquiry reaches the right person. We aim to respond within one business day.
+        </p>
+        <p class="text-gray-300 mb-4">
+          We manage all client data in line with GDPR and only use your details to respond to your enquiry.
+        </p>
+        <p class="text-gray-300">
+          If you need information in an alternative format or require assistance, let us know in your message.
+        </p>
+      </div>
+
+      <!-- UPDATED: AJAX Formspree submit (no redirect) -->
+      <form
+        id="contactForm"
+        action="https://formspree.io/f/mvzalpbp"
+        method="POST"
+        class="grid gap-6"
+      >
+        <div class="grid md:grid-cols-2 gap-6">
+          <input
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="Your Name"
+            class="p-3 rounded-lg bg-gray-800 text-gray-200 focus:outline-none"
+          >
+          <input
+            name="company"
+            type="text"
+            autocomplete="organization"
+            placeholder="Company"
+            class="p-3 rounded-lg bg-gray-800 text-gray-200 focus:outline-none"
+          >
+        </div>
+
+        <input
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="Your Email"
+          class="p-3 rounded-lg bg-gray-800 text-gray-200 focus:outline-none"
+        >
+
+        <textarea
+          name="message"
+          required
+          placeholder="Your Message"
+          rows="6"
+          class="p-3 rounded-lg bg-gray-800 text-gray-200 focus:outline-none"
+        ></textarea>
+
+        <!-- Optional metadata -->
+        <input type="hidden" name="_subject" value="New enquiry from LightouchConsulting.com">
+        <input type="text" name="_gotcha" style="display:none">
+
+        <button
+          id="contactSubmitBtn"
+          type="submit"
+          class="justify-self-center px-6 py-3 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 transition"
+        >
+          Start the conversation today
+        </button>
+
+        <p id="formStatus" class="text-center text-gray-300 mt-2 hidden" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 py-6 text-center text-gray-500 text-sm">
+    &copy; <span id="year"></span> Lightouch Consulting. All rights reserved.
+  </footer>
+
+  <script>
+    // Year auto-update
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Animate cards on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".fade-card").forEach(card => observer.observe(card));
+
+    // UPDATED: Formspree AJAX submit (prevents redirect)
+    const contactForm = document.getElementById("contactForm");
+    const formStatus = document.getElementById("formStatus");
+    const contactSubmitBtn = document.getElementById("contactSubmitBtn");
+
+    contactForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      formStatus.classList.remove("hidden");
+      formStatus.textContent = "Sending…";
+
+      if (contactSubmitBtn) {
+        contactSubmitBtn.disabled = true;
+        contactSubmitBtn.classList.add("opacity-70", "cursor-not-allowed");
+      }
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: "POST",
+          body: new FormData(contactForm),
+          headers: { "Accept": "application/json" }
+        });
+
+        if (response.ok) {
+          formStatus.textContent = "Thanks — we’ll be in touch within one business day.";
+          contactForm.reset();
+        } else {
+          formStatus.textContent = "Sorry — something went wrong. Please try again later.";
+          console.error("Formspree error:", await response.text());
+        }
+      } catch (error) {
+        formStatus.textContent = "Network error. Please try again.";
+        console.error(error);
+      } finally {
+        if (contactSubmitBtn) {
+          contactSubmitBtn.disabled = false;
+          contactSubmitBtn.classList.remove("opacity-70", "cursor-not-allowed");
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
