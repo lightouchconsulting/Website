@@ -1,2 +1,18 @@
 *.pdf
 .DS_Store
+
+# Next.js
+.next/
+out/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
