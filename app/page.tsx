@@ -30,12 +30,21 @@ export default function Home() {
 
     menuBtn?.addEventListener("click", handleMenuToggle);
 
+    // Close mobile nav when a link is clicked
+    const mobileNavLinks = mobileNav ? mobileNav.querySelectorAll('a') : null;
+    const closeNav = () => {
+      if (!mobileNav || !menuBtn) return;
+      mobileNav.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    };
+    mobileNavLinks?.forEach(link => link.addEventListener('click', closeNav));
+
     // Header shadow on scroll
     const header = headerRef.current;
     const toggleShadow = () => {
       if (!header) return;
-      if (window.scrollY > 4) header.classList.add("shadow-soft");
-      else header.classList.remove("shadow-soft");
+      if (window.scrollY > 4) header.classList.add("shadow-lg");
+      else header.classList.remove("shadow-lg");
     };
     toggleShadow();
     window.addEventListener("scroll", toggleShadow, { passive: true });
@@ -103,6 +112,7 @@ export default function Home() {
 
     return () => {
       menuBtn?.removeEventListener("click", handleMenuToggle);
+      mobileNavLinks?.forEach(link => link.removeEventListener('click', closeNav));
       window.removeEventListener("scroll", toggleShadow);
       observer.disconnect();
       contactForm?.removeEventListener("submit", handleFormSubmit);
@@ -442,7 +452,7 @@ export default function Home() {
 
             {/* Optional metadata */}
             <input type="hidden" name="_subject" value="New enquiry from LightouchConsulting.com" />
-            <input type="text" name="_gotcha" style={{ display: "none" }} />
+            <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex={-1} aria-hidden="true" />
 
             <button
               id="contactSubmitBtn"
