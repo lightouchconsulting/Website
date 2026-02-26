@@ -1,24 +1,19 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
 import { auth } from './auth'
+import { NextResponse } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  const session = await auth()
-  const { pathname } = request.nextUrl
+export default auth((req) => {
+  const session = req.auth
+  const { pathname } = req.nextUrl
 
-  // Protect /admin and /portal
   if (pathname.startsWith('/admin') || pathname.startsWith('/portal')) {
     if (!session) {
-      return NextResponse.redirect(new URL('/api/auth/signin', request.url))
+      return NextResponse.redirect(new URL('/login', req.url))
     }
-    // Only admins can access /admin
     if (pathname.startsWith('/admin') && session.user?.role !== 'admin') {
-      return NextResponse.redirect(new URL('/portal', request.url))
+      return NextResponse.redirect(new URL('/portal', req.url))
     }
   }
-
-  return NextResponse.next()
-}
+})
 
 export const config = {
   matcher: ['/admin/:path*', '/portal/:path*'],

@@ -13,8 +13,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, profile }) {
       if (profile) {
         const adminIds = (process.env.ADMIN_LINKEDIN_IDS ?? '').split(',').map(s => s.trim())
-        token.linkedinId = (profile as Record<string, unknown>).sub as string ?? (profile as Record<string, unknown>).id as string
-        token.role = adminIds.includes(token.linkedinId as string) ? 'admin' : 'user'
+        const linkedinId = (profile as Record<string, unknown>).sub as string | undefined
+        if (!linkedinId) {
+          token.role = 'user'
+          return token
+        }
+        token.linkedinId = linkedinId
+        token.role = adminIds.includes(linkedinId) ? 'admin' : 'user'
       }
       return token
     },
