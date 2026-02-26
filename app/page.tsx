@@ -141,6 +141,7 @@ export default function Home() {
               <a href="#methods" className="hover:text-yellow-400">Methods &amp; Tools</a>
               <a href="#values" className="hover:text-yellow-400">Our Values</a>
               <a href="#contact" className="hover:text-yellow-400">Contact</a>
+              <a href="/blog" className="hover:text-yellow-400">Insights</a>
             </nav>
 
             {/* Mobile menu button */}
@@ -182,6 +183,7 @@ export default function Home() {
             <a href="#methods" className="py-2">Methods &amp; Tools</a>
             <a href="#values" className="py-2">Our Values</a>
             <a href="#contact" className="py-2">Contact</a>
+            <a href="/blog" className="py-2">Insights</a>
           </div>
         </nav>
       </header>
