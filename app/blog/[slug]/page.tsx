@@ -25,6 +25,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       <div className="prose prose-invert prose-sm max-w-none text-gray-300">
         {post.content.split('\n').map((line, i) => {
+          if (line.startsWith('### ')) return <h3 key={i} className="text-white text-lg font-semibold mt-6 mb-2">{line.slice(4)}</h3>
           if (line.startsWith('## ')) return <h2 key={i} className="text-white text-xl font-semibold mt-8 mb-3">{line.slice(3)}</h2>
           if (line.startsWith('# ')) return <h1 key={i} className="text-white text-2xl font-bold mt-8 mb-3">{line.slice(2)}</h1>
           if (line.trim() === '') return <br key={i} />

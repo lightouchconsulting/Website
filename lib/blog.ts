@@ -34,8 +34,8 @@ export async function getPosts(): Promise<Post[]> {
             theme: data.theme ?? '',
             subThemes: data.subThemes ?? [],
             weekLabel: data.weekLabel ?? '',
-            date: data.date ?? '',
-            status: data.status ?? 'published',
+            date: data.date ? new Date(data.date).toISOString().slice(0, 10) : '',
+            status: data.status ?? 'draft',
             excerpt: content.trim().split('\n').find(l => l && !l.startsWith('#')) ?? '',
           } satisfies Post
         })
@@ -51,18 +51,20 @@ export async function getPost(slug: string): Promise<FullPost | null> {
   try {
     const raw = await fs.readFile(filePath, 'utf-8')
     const { data, content } = matter(raw)
-    return {
+    const post = {
       slug: data.slug ?? slug,
       title: data.title ?? '',
       theme: data.theme ?? '',
       subThemes: data.subThemes ?? [],
       weekLabel: data.weekLabel ?? '',
-      date: data.date ?? '',
-      status: data.status ?? 'published',
+      date: data.date ? new Date(data.date).toISOString().slice(0, 10) : '',
+      status: data.status ?? 'draft',
       sources: data.sources ?? [],
-      excerpt: content.trim().split('\n').find(l => l && !l.startsWith('#')) ?? '',
+      excerpt: content.trim().split('\n').find((l: string) => l && !l.startsWith('#')) ?? '',
       content,
     }
+    if (post.status !== 'published') return null
+    return post
   } catch {
     return null
   }
