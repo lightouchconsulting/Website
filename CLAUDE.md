@@ -8,7 +8,7 @@ This is a static marketing website for **Lightouch Consulting** — a GenAI-nati
 
 ## Architecture
 
-**Single file:** `index-2.html` — the entire site lives here, including all inline styles, scripts, and markup.
+**Single file:** `index.html` — the entire site lives here, including all inline styles, scripts, and markup.
 
 **Tech stack (all via CDN, no installation required):**
 - Tailwind CSS v3 (utility-first styling)
@@ -24,11 +24,11 @@ This is a static marketing website for **Lightouch Consulting** — a GenAI-nati
 
 ## Development
 
-No build step. Open `index-2.html` directly in a browser, or serve locally:
+No build step. Open `index.html` directly in a browser, or serve locally:
 
 ```bash
 python3 -m http.server 8000
-# then open http://localhost:8000/index-2.html
+# then open http://localhost:8000/index.html
 ```
 
 ## Site Structure
@@ -41,10 +41,10 @@ The page uses anchor-based navigation with these sections: Who We Are, What We D
 - **Hosted on:** PythonAnywhere (custom domain), serving static files from `~/Website/`
 
 ### Deploy an update
-1. Edit `index-2.html` locally
+1. Edit `index.html` locally
 2. Commit and push:
    ```bash
-   git add index-2.html
+   git add index.html
    git commit -m "describe change"
    git push origin main
    ```
