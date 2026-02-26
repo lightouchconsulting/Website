@@ -38,18 +38,13 @@ The page uses anchor-based navigation with these sections: Who We Are, What We D
 ## Deployment
 
 - **Repository:** https://github.com/lightouchconsulting/Website
-- **Hosted on:** PythonAnywhere (custom domain), serving static files from `~/Website/`
+- **Hosted on:** Vercel (custom domain), connected directly to the GitHub repo
+- **Auto-deploy:** Every push to `main` deploys automatically — no manual steps
 
 ### Deploy an update
-1. Edit `index.html` locally
-2. Commit and push:
-   ```bash
-   git add index.html
-   git commit -m "describe change"
-   git push origin main
-   ```
-3. In PythonAnywhere **Bash console**:
-   ```bash
-   cd ~/Website && git pull
-   ```
-4. Changes are live immediately (no reload needed)
+```bash
+git add index.html
+git commit -m "describe change"
+git push origin main
+```
+Live in ~30 seconds.

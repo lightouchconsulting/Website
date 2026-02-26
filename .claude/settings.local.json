@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \" import re with open\\(''/Users/christopherneilon/Downloads/Lightouch™ Consulting Partner Overview 12Feb26.key'', ''rb''\\) as f: content = f.read\\(\\) # Extract printable strings of length > 4 pattern = re.compile\\(b''[ -~]{5,}''\\) matches = pattern.findall\\(content\\) for m in matches: try: s = m.decode\\(''ascii''\\) if any\\(word in s.lower\\(\\) for word in [''theme'', ''topic'', ''pillar'', ''consult'', ''lightouch'', ''slide'', ''leader'', ''strategy'', ''digital'', ''future'', ''innovat'', ''transform'']\\): print\\(s\\) except: pass \")",
+      "Bash(python3:*)",
+      "WebFetch(domain:www.lightouchconsulting.com)",
+      "Bash(/usr/bin/python3:*)",
+      "Bash(brew list:*)",
+      "Bash(mdls:*)",
+      "Bash(ls:*)",
+      "Bash(xxd:*)",
+      "Bash(cat:*)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(file:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(git:*)",
+      "Bash(ssh:*)",
+      "Bash(gh auth:*)",
+      "Bash(ssh-keygen:*)",
+      "Bash(~/.ssh/config:*)",
+      "WebFetch(domain:help.pythonanywhere.com)"
+    ]
+  }
+}
