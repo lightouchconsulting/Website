@@ -4,26 +4,35 @@ import { NextResponse } from 'next/server'
 
 const { auth } = NextAuth(authConfig)
 
+interface TokenPayload {
+  role?: string
+  projects?: string[]
+}
+
+export function getRedirectForRole(token: TokenPayload | null, pathname: string): string | null {
+  if (!token || token.role === 'unauthorized') return '/login'
+
+  if (pathname.startsWith('/admin') && token.role !== 'admin') return '/portal'
+
+  if (pathname.startsWith('/portal/projects/')) {
+    const raw = pathname.split('/portal/projects/')[1]?.split('/')[0]
+    const slug = raw ? decodeURIComponent(raw) : undefined
+    if (slug && token.role !== 'admin' && !(token.projects ?? []).includes(slug)) {
+      return '/portal'
+    }
+  }
+
+  return null
+}
+
 export default auth((req) => {
   const session = req.auth
   const { pathname } = req.nextUrl
 
   if (pathname.startsWith('/admin') || pathname.startsWith('/portal')) {
-    if (!session || session.user?.role === 'unauthorized') {
-      return NextResponse.redirect(new URL('/login', req.url))
-    }
-    if (pathname.startsWith('/admin') && session.user?.role !== 'admin') {
-      return NextResponse.redirect(new URL('/portal', req.url))
-    }
-    // Project-scoped access: clients and consultants only see their assigned projects
-    if (pathname.startsWith('/portal/projects/')) {
-      const raw = pathname.split('/portal/projects/')[1]?.split('/')[0]
-      const slug = raw ? decodeURIComponent(raw) : undefined
-      const role = session.user?.role
-      const projects = session.user?.projects ?? []
-      if (slug && role !== 'admin' && !projects.includes(slug)) {
-        return NextResponse.redirect(new URL('/portal', req.url))
-      }
+    const redirect = getRedirectForRole(session?.user ?? null, pathname)
+    if (redirect) {
+      return NextResponse.redirect(new URL(redirect, req.url))
     }
   }
 })
