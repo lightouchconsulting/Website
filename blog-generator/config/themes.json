@@ -1,0 +1,32 @@
+{
+  "themes": [
+    {
+      "name": "Strategy",
+      "subThemes": ["Business Alignment", "Target Operating Model", "Cloud Migration", "Service Strategy", "Innovation"]
+    },
+    {
+      "name": "Management",
+      "subThemes": ["Governance & Risk Management", "Target Operating Model", "Application Selection", "Capability Roadmap", "Performance Improvement"]
+    },
+    {
+      "name": "Architecture",
+      "subThemes": ["Business Architecture", "Application Architecture", "Data Architecture", "Infrastructure Architecture", "Roadmap & Governance"]
+    },
+    {
+      "name": "Development",
+      "subThemes": ["Analysis", "Specification", "Design", "Validation", "Change Management"]
+    },
+    {
+      "name": "Delivery",
+      "subThemes": ["Initiation", "Plan", "Execute", "Monitor", "Close"]
+    },
+    {
+      "name": "Risk",
+      "subThemes": ["Threat & Vulnerability", "Access Control & IAM", "Data Security & Privacy", "Application & Infrastructure", "Compliance Management"]
+    },
+    {
+      "name": "Operations",
+      "subThemes": ["Planning", "Design", "Transition", "Issue & Problem", "Performance Improvement"]
+    }
+  ]
+}

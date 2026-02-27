@@ -1,0 +1,19 @@
+{
+  "feeds": [
+    "https://feeds.hbr.org/harvardbusiness",
+    "https://www.mckinsey.com/insights/rss",
+    "https://feeds.feedburner.com/venturebeat/SZYF",
+    "https://thenewstack.io/feed/",
+    "https://feeds.feedburner.com/oreilly/radar/atom",
+    "https://www.cio.com/feed/",
+    "https://www.infoq.com/feed/",
+    "https://feeds.arstechnica.com/arstechnica/technology-lab",
+    "https://www.zdnet.com/news/rss.xml",
+    "https://feeds.feedburner.com/TechCrunch",
+    "https://www.wired.com/feed/rss",
+    "https://slashdot.org/rss/technology.rss",
+    "https://feeds.feedburner.com/GartnerNewsroom",
+    "https://www.computerweekly.com/rss/IT-industry-news.xml",
+    "https://feeds.feedburner.com/InfosecurityMagazineonline"
+  ]
+}
