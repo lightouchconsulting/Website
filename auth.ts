@@ -1,25 +1,27 @@
 import NextAuth from 'next-auth'
-import LinkedIn from 'next-auth/providers/linkedin'
+import { authConfig } from './auth.config'
+import { resolveRole } from '@/lib/roles'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [
-    LinkedIn({
-      clientId: process.env.LINKEDIN_CLIENT_ID!,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
-    }),
-  ],
-  session: { strategy: 'jwt' },
+  ...authConfig,
   callbacks: {
     async jwt({ token, profile }) {
       if (profile) {
-        const adminIds = (process.env.ADMIN_LINKEDIN_IDS ?? '').split(',').map(s => s.trim())
         const linkedinId = (profile as Record<string, unknown>).sub as string | undefined
         if (!linkedinId) {
-          token.role = 'user'
+          token.role = 'unauthorized'
           return token
         }
+        const resolved = await resolveRole(linkedinId)
+        if (!resolved) {
+          token.role = 'unauthorized'
+          token.linkedinId = linkedinId
+          token.projects = []
+          return token
+        }
+        token.role = resolved.role
         token.linkedinId = linkedinId
-        token.role = adminIds.includes(linkedinId) ? 'admin' : 'user'
+        token.projects = resolved.projects
       }
       return token
     },
@@ -28,11 +30,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ...session.user,
         role: token.role as string,
         linkedinId: token.linkedinId as string,
+        projects: token.projects as string[],
       }
       return session
     },
-  },
-  pages: {
-    signIn: '/login',
   },
 })

@@ -9,6 +9,7 @@ declare module 'next-auth' {
       image?: string | null
       role?: string
       linkedinId?: string
+      projects?: string[]
     }
   }
 }
@@ -17,5 +18,6 @@ declare module 'next-auth/jwt' {
   interface JWT {
     role?: string
     linkedinId?: string
+    projects?: string[]
   }
 }
