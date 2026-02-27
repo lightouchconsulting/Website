@@ -1,4 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import * as fsPromises from 'fs/promises'
+
+vi.mock('fs/promises')
 
 describe('resolveRole', () => {
   beforeEach(() => {
@@ -14,6 +17,7 @@ describe('resolveRole', () => {
   })
 
   it('returns admin role for admin LinkedIn ID', async () => {
+    vi.mocked(fsPromises.readdir).mockResolvedValue([] as any)
     const { resolveRole } = await import('./roles')
     const result = await resolveRole('admin-123')
     expect(result?.role).toBe('admin')
@@ -21,40 +25,40 @@ describe('resolveRole', () => {
   })
 
   it('returns null for unknown LinkedIn ID', async () => {
-    vi.mock('fs/promises', () => ({
-      default: {
-        readdir: vi.fn().mockResolvedValue([]),
-        readFile: vi.fn().mockRejectedValue(new Error('not found')),
-      }
-    }))
+    vi.mocked(fsPromises.readdir).mockResolvedValue([] as any)
     const { resolveRole } = await import('./roles')
     const result = await resolveRole('unknown-999')
     expect(result).toBeNull()
   })
 
-  it('returns consultant role for consultant LinkedIn ID', async () => {
-    vi.mock('fs/promises', () => ({
-      default: {
-        readdir: vi.fn().mockResolvedValue([]),
-        readFile: vi.fn().mockRejectedValue(new Error('not found')),
-      }
-    }))
+  it('returns consultant role with empty projects when no configs', async () => {
+    vi.mocked(fsPromises.readdir).mockResolvedValue([] as any)
     const { resolveRole } = await import('./roles')
     const result = await resolveRole('consultant-789')
     expect(result?.role).toBe('consultant')
+    expect(result?.projects).toEqual([])
+  })
+
+  it('returns consultant role with assigned projects', async () => {
+    vi.mocked(fsPromises.readdir).mockResolvedValue(['acme-corp'] as any)
+    vi.mocked(fsPromises.readFile).mockResolvedValue(JSON.stringify({
+      name: 'Acme Corp',
+      consultants: ['consultant-789'],
+      clients: ['client-555'],
+    }) as any)
+    const { resolveRole } = await import('./roles')
+    const result = await resolveRole('consultant-789')
+    expect(result?.role).toBe('consultant')
+    expect(result?.projects).toContain('acme-corp')
   })
 
   it('returns client role with projects for known client', async () => {
-    vi.mock('fs/promises', () => ({
-      default: {
-        readdir: vi.fn().mockResolvedValue(['acme-corp']),
-        readFile: vi.fn().mockResolvedValue(JSON.stringify({
-          name: 'Acme Corp',
-          consultants: ['consultant-789'],
-          clients: ['client-555'],
-        })),
-      }
-    }))
+    vi.mocked(fsPromises.readdir).mockResolvedValue(['acme-corp'] as any)
+    vi.mocked(fsPromises.readFile).mockResolvedValue(JSON.stringify({
+      name: 'Acme Corp',
+      consultants: ['consultant-789'],
+      clients: ['client-555'],
+    }) as any)
     const { resolveRole } = await import('./roles')
     const result = await resolveRole('client-555')
     expect(result?.role).toBe('client')

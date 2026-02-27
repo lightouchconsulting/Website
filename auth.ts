@@ -10,6 +10,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const linkedinId = (profile as Record<string, unknown>).sub as string | undefined
         if (!linkedinId) {
           token.role = 'unauthorized'
+          token.linkedinId = ''
+          token.projects = []
           return token
         }
         const resolved = await resolveRole(linkedinId)

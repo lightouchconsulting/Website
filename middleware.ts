@@ -17,7 +17,8 @@ export default auth((req) => {
     }
     // Project-scoped access: clients and consultants only see their assigned projects
     if (pathname.startsWith('/portal/projects/')) {
-      const slug = pathname.split('/portal/projects/')[1]?.split('/')[0]
+      const raw = pathname.split('/portal/projects/')[1]?.split('/')[0]
+      const slug = raw ? decodeURIComponent(raw) : undefined
       const role = session.user?.role
       const projects = session.user?.projects ?? []
       if (slug && role !== 'admin' && !projects.includes(slug)) {
