@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import fs from 'fs/promises'
-import path from 'path'
-import { updateFile } from '@/lib/github'
+import { getFileContent, updateFile } from '@/lib/github'
 
 export async function PATCH(
   request: NextRequest,
@@ -29,10 +27,10 @@ export async function PATCH(
     return NextResponse.json({ error: 'linkedinId required' }, { status: 400 })
   }
 
-  const configPath = path.join(process.cwd(), 'content', 'projects', slug, 'config.json')
+  const ghPath = `content/projects/${slug}/config.json`
   let config: { name: string; consultants: string[]; clients: string[] }
   try {
-    const raw = await fs.readFile(configPath, 'utf-8')
+    const { content: raw } = await getFileContent(ghPath)
     config = JSON.parse(raw)
   } catch {
     return NextResponse.json({ error: 'Project not found' }, { status: 404 })

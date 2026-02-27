@@ -20,6 +20,9 @@ export async function POST(request: NextRequest) {
 
   // Build the published slug with week prefix if not already present
   const publishedSlug = data.slug ?? `${week}-${slug}`
+  if (!safePattern.test(publishedSlug)) {
+    return NextResponse.json({ error: 'Invalid slug in frontmatter' }, { status: 400 })
+  }
   const fromPath = `content/drafts/${week}/${slug}.md`
   const toPath = `content/posts/${publishedSlug}.md`
 

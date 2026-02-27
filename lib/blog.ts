@@ -47,6 +47,7 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function getPost(slug: string): Promise<FullPost | null> {
+  if (!/^[\w-]+$/.test(slug)) return null
   const filePath = path.join(process.cwd(), 'content', 'posts', `${slug}.md`)
   try {
     const raw = await fs.readFile(filePath, 'utf-8')

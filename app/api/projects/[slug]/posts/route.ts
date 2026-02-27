@@ -17,6 +17,10 @@ export async function POST(
     return NextResponse.json({ error: 'Invalid slug' }, { status: 400 })
   }
 
+  if (role === 'consultant' && !(session?.user?.projects ?? []).includes(slug)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   const { title, body } = await request.json()
   if (!title || !body) {
     return NextResponse.json({ error: 'title and body required' }, { status: 400 })

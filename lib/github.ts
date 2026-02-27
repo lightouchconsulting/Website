@@ -4,6 +4,13 @@ const octokit = new Octokit({ auth: process.env.GH_PAT })
 const owner = process.env.GITHUB_OWNER ?? 'lightouchconsulting'
 const repo = process.env.GITHUB_REPO ?? 'Website'
 
+export async function getFileContent(filePath: string): Promise<{ content: string; sha: string }> {
+  const { data } = await octokit.repos.getContent({ owner, repo, path: filePath })
+  const file = data as { content: string; sha: string; encoding: string }
+  const content = Buffer.from(file.content, 'base64').toString('utf-8')
+  return { content, sha: file.sha }
+}
+
 export async function createFile(filePath: string, content: string, message: string) {
   await octokit.repos.createOrUpdateFileContents({
     owner, repo,
