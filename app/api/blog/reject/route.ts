@@ -9,6 +9,12 @@ export async function POST(request: NextRequest) {
   }
 
   const { week, slug } = await request.json()
+
+  const safePattern = /^[\w-]+$/
+  if (!safePattern.test(week) || !safePattern.test(slug)) {
+    return NextResponse.json({ error: 'Invalid week or slug' }, { status: 400 })
+  }
+
   await deleteFile(
     `content/drafts/${week}/${slug}.md`,
     `chore: reject draft ${slug}`

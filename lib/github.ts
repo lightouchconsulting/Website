@@ -32,7 +32,11 @@ export async function deleteFile(filePath: string, message: string) {
 }
 
 export async function moveFile(fromPath: string, toPath: string, content: string, message: string) {
-  // GitHub API has no move — create at new path, delete from old path
   await createFile(toPath, content, message)
-  await deleteFile(fromPath, `chore: remove draft after publishing ${toPath}`)
+  try {
+    await deleteFile(fromPath, `chore: remove draft after publishing ${toPath}`)
+  } catch (err) {
+    console.error(`[github] Published ${toPath} but failed to delete draft ${fromPath}:`, err)
+    // Don't rethrow — the publish succeeded, draft cleanup can be manual
+  }
 }

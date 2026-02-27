@@ -13,15 +13,29 @@ export default function DraftActions({
 }) {
   const [content, setContent] = useState(initialContent)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   async function handleAction(action: 'approve' | 'reject') {
     setLoading(true)
-    await fetch(`/api/blog/${action}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ week, slug, content }),
-    })
+    setError(null)
+    try {
+      const res = await fetch(`/api/blog/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ week, slug, content }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error ?? `Failed to ${action} (${res.status})`)
+        setLoading(false)
+        return
+      }
+    } catch {
+      setError(`Network error — please try again`)
+      setLoading(false)
+      return
+    }
     setLoading(false)
     router.push('/admin/drafts')
     router.refresh()
@@ -37,6 +51,7 @@ export default function DraftActions({
           className="w-full h-64 bg-gray-900 text-gray-200 text-sm font-mono p-3 rounded border border-gray-700 focus:border-white outline-none"
         />
       </div>
+      {error && <p className="text-red-400 text-sm">{error}</p>}
       <div className="flex gap-3">
         <button
           onClick={() => handleAction('approve')}

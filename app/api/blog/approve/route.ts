@@ -10,6 +10,12 @@ export async function POST(request: NextRequest) {
   }
 
   const { week, slug, content } = await request.json()
+
+  const safePattern = /^[\w-]+$/
+  if (!safePattern.test(week) || !safePattern.test(slug)) {
+    return NextResponse.json({ error: 'Invalid week or slug' }, { status: 400 })
+  }
+
   const { data } = matter(content)
 
   // Build the published slug with week prefix if not already present
@@ -18,7 +24,13 @@ export async function POST(request: NextRequest) {
   const toPath = `content/posts/${publishedSlug}.md`
 
   // Update status to published in the content
-  const publishedContent = content.replace(/^status:.*$/m, 'status: published')
+  let publishedContent: string
+  if (/^status:/m.test(content)) {
+    publishedContent = content.replace(/^status:.*$/m, 'status: published')
+  } else {
+    // Insert status: published before the closing --- of frontmatter
+    publishedContent = content.replace(/^(---\n[\s\S]*?)\n---/m, '$1\nstatus: published\n---')
+  }
 
   await moveFile(fromPath, toPath, publishedContent, `feat: publish ${publishedSlug}`)
 
