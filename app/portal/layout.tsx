@@ -18,6 +18,9 @@ export default async function PortalLayout({ children }: { children: React.React
             <nav className="flex space-x-6 text-sm">
               <Link href="/portal/training" className="hover:text-yellow-400">Training</Link>
               <Link href="/portal/best-practices" className="hover:text-yellow-400">Best Practices</Link>
+              {session.user?.role === 'admin' && (
+                <Link href="/admin" className="hover:text-yellow-400">Admin</Link>
+              )}
               <Link href="/" className="hover:text-yellow-400">Main Site</Link>
               <a href="/api/auth/signout" className="hover:text-yellow-400">Sign Out</a>
             </nav>

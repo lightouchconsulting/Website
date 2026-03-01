@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Lightouch™ Consulting",
@@ -22,7 +23,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-black text-gray-200 font-sans">
-        {children}
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
       </body>
     </html>
   );
