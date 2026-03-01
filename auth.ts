@@ -8,6 +8,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, profile }) {
       if (profile) {
         const linkedinId = (profile as Record<string, unknown>).sub as string | undefined
+        console.log('DEBUG LinkedIn profile.sub:', linkedinId)
         if (!linkedinId) {
           token.role = 'unauthorized'
           token.linkedinId = ''
