@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function Home() {
-  const menuBtnRef = useRef<HTMLButtonElement>(null);
-  const mobileNavRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLElement>(null);
   const formStatusRef = useRef<HTMLParagraphElement>(null);
   const contactFormRef = useRef<HTMLFormElement>(null);
   const contactSubmitBtnRef = useRef<HTMLButtonElement>(null);
@@ -16,38 +14,6 @@ export default function Home() {
     if (yearRef.current) {
       yearRef.current.textContent = String(new Date().getFullYear());
     }
-
-    // Mobile menu toggle
-    const menuBtn = menuBtnRef.current;
-    const mobileNav = mobileNavRef.current;
-
-    const handleMenuToggle = () => {
-      if (!mobileNav || !menuBtn) return;
-      const open = mobileNav.classList.toggle("hidden") === false;
-      menuBtn.setAttribute("aria-expanded", String(open));
-      menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    };
-
-    menuBtn?.addEventListener("click", handleMenuToggle);
-
-    // Close mobile nav when a link is clicked
-    const mobileNavLinks = mobileNav ? mobileNav.querySelectorAll('a') : null;
-    const closeNav = () => {
-      if (!mobileNav || !menuBtn) return;
-      mobileNav.classList.add('hidden');
-      menuBtn.setAttribute('aria-expanded', 'false');
-    };
-    mobileNavLinks?.forEach(link => link.addEventListener('click', closeNav));
-
-    // Header shadow on scroll
-    const header = headerRef.current;
-    const toggleShadow = () => {
-      if (!header) return;
-      if (window.scrollY > 4) header.classList.add("shadow-lg");
-      else header.classList.remove("shadow-lg");
-    };
-    toggleShadow();
-    window.addEventListener("scroll", toggleShadow, { passive: true });
 
     // Animate cards on scroll
     const observer = new IntersectionObserver(
@@ -111,9 +77,6 @@ export default function Home() {
     contactForm?.addEventListener("submit", handleFormSubmit);
 
     return () => {
-      menuBtn?.removeEventListener("click", handleMenuToggle);
-      mobileNavLinks?.forEach(link => link.removeEventListener('click', closeNav));
-      window.removeEventListener("scroll", toggleShadow);
       observer.disconnect();
       contactForm?.removeEventListener("submit", handleFormSubmit);
     };
@@ -121,72 +84,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Header / Navigation */}
-      <header
-        id="site-header"
-        ref={headerRef}
-        className="sticky top-0 z-40 bg-black/90 backdrop-blur transition-shadow"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <a href="#" className="flex items-center gap-2 group" aria-label="Lightouch.com home">
-              <span className="text-xl font-bold tracking-wide">Lightouch™ Consulting</span>
-            </a>
-
-            {/* Desktop nav */}
-            <nav className="hidden md:flex space-x-6" aria-label="Primary">
-              <a href="#who" className="hover:text-yellow-400">Who We Are</a>
-              <a href="#what" className="hover:text-yellow-400">What We Do</a>
-              <a href="#methods" className="hover:text-yellow-400">Methods &amp; Tools</a>
-              <a href="#values" className="hover:text-yellow-400">Our Values</a>
-              <a href="#contact" className="hover:text-yellow-400">Contact</a>
-              <a href="/blog" className="hover:text-yellow-400">Insights</a>
-            </nav>
-
-            {/* Mobile menu button */}
-            <button
-              id="menuBtn"
-              ref={menuBtnRef}
-              className="md:hidden p-2 rounded-lg border border-slate-300 focus-ring"
-              aria-expanded="false"
-              aria-controls="mobileNav"
-              aria-label="Open menu"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <nav
-          id="mobileNav"
-          ref={mobileNavRef}
-          className="md:hidden hidden fixed top-16 left-0 w-full bg-black z-50 border-t border-slate-200"
-          aria-label="Mobile"
-        >
-          <div className="px-4 py-3 flex flex-col gap-2">
-            <a href="#who" className="py-2">Who We Are</a>
-            <a href="#what" className="py-2">What We Do</a>
-            <a href="#methods" className="py-2">Methods &amp; Tools</a>
-            <a href="#values" className="py-2">Our Values</a>
-            <a href="#contact" className="py-2">Contact</a>
-            <a href="/blog" className="py-2">Insights</a>
-          </div>
-        </nav>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
