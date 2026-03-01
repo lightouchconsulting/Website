@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
 import Link from 'next/link'
+import GenerateButton from './GenerateButton'
 
 interface DraftMeta {
   week: string
@@ -42,10 +43,13 @@ export default async function DraftsPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-16 px-4">
-      <h1 className="text-3xl font-bold text-white mb-8">Draft Posts</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-white">Draft Posts</h1>
+        <GenerateButton />
+      </div>
 
       {drafts.length === 0 && (
-        <p className="text-gray-500">No drafts pending review.</p>
+        <p className="text-gray-500">No drafts pending review. Click "Generate Articles" to create new drafts.</p>
       )}
 
       <div className="space-y-3">
