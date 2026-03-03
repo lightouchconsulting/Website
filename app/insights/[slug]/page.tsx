@@ -14,7 +14,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className="max-w-2xl mx-auto py-16 px-4">
-      <Link href="/blog" className="text-sm text-gray-400 hover:text-white mb-8 inline-block">
+      <Link href="/insights" className="text-sm text-gray-400 hover:text-white mb-8 inline-block">
         ← Back to Insights
       </Link>
 

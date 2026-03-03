@@ -20,12 +20,12 @@ export default async function BlogPage() {
               {post.theme} · {post.weekLabel}
             </p>
             <h2 className="text-xl font-semibold text-white mb-2">
-              <Link href={`/blog/${post.slug}`} className="hover:text-gray-300 transition">
+              <Link href={`/insights/${post.slug}`} className="hover:text-gray-300 transition">
                 {post.title}
               </Link>
             </h2>
             <p className="text-gray-400 text-sm mb-3">{post.excerpt}</p>
-            <Link href={`/blog/${post.slug}`} className="text-sm text-white underline underline-offset-4 hover:text-gray-300">
+            <Link href={`/insights/${post.slug}`} className="text-sm text-white underline underline-offset-4 hover:text-gray-300">
               Read more →
             </Link>
           </article>

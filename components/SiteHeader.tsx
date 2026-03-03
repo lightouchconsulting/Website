@@ -52,7 +52,7 @@ export default function SiteHeader() {
     { href: "/#what", label: "What We Do" },
     { href: "/#methods", label: "Methods & Tools" },
     { href: "/#values", label: "Our Values" },
-    { href: "/blog", label: "Insights" },
+    { href: "/insights", label: "Insights" },
     { href: "/#contact", label: "Contact" },
   ];
 
