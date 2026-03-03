@@ -1,7 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk'
+import Groq from 'groq-sdk'
 import type { Article } from './scraper'
 
-const client = new Anthropic()
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
 export interface ClassifiedArticle extends Article {
   theme: string
@@ -12,18 +12,14 @@ export async function classifyArticles(
   articles: Article[],
   themes: { name: string; subThemes: string[] }[]
 ): Promise<ClassifiedArticle[]> {
+  if (articles.length === 0) return []
+
   const themeList = themes.map(t => `- ${t.name}: ${t.subThemes.join(', ')}`).join('\n')
+  const articleList = articles
+    .map((a, idx) => `${idx + 1}. "${a.title}" — ${a.snippet}`)
+    .join('\n')
 
-  const results: ClassifiedArticle[] = []
-
-  // Process in batches of 10 to avoid hitting token limits
-  for (let i = 0; i < articles.length; i += 10) {
-    const batch = articles.slice(i, i + 10)
-    const articleList = batch
-      .map((a, idx) => `${idx + 1}. "${a.title}" — ${a.snippet}`)
-      .join('\n')
-
-    const prompt = `You are a content classifier for a CIO-focused technology consulting firm.
+  const prompt = `You are a content classifier for a CIO-focused technology consulting firm.
 
 Classify each article into exactly one of these 7 themes:
 ${themeList}
@@ -36,34 +32,26 @@ Respond with a JSON array only, one entry per article, in this exact format:
 
 Only include the JSON array in your response, no other text.`
 
-    try {
-      const response = await client.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }],
-      })
+  try {
+    const response = await client.chat.completions.create({
+      model: 'llama-3.1-70b-versatile',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 2048,
+      temperature: 0,
+    })
 
-      const text = response.content[0].type === 'text' ? response.content[0].text : ''
-      const parsed = JSON.parse(text)
+    const text = response.choices[0]?.message?.content ?? ''
+    const jsonMatch = text.match(/\[[\s\S]*\]/)
+    const parsed: { index: number; theme: string; subThemes: string[] }[] = JSON.parse(jsonMatch?.[0] ?? text)
 
-      for (const result of parsed) {
-        const article = batch[result.index - 1]
-        if (article) {
-          results.push({
-            ...article,
-            theme: result.theme,
-            subThemes: result.subThemes ?? [],
-          })
-        }
-      }
-    } catch (err) {
-      console.warn(`[classifier] Batch ${i}-${i + 10} failed:`, (err as Error).message)
-      // Add unclassified articles with fallback theme
-      for (const article of batch) {
-        results.push({ ...article, theme: 'Strategy', subThemes: [] })
-      }
-    }
+    return parsed.map(result => {
+      const article = articles[result.index - 1]
+      if (!article) return null
+      return { ...article, theme: result.theme, subThemes: result.subThemes ?? [] }
+    }).filter((a): a is ClassifiedArticle => a !== null)
+
+  } catch (err) {
+    console.warn('[classifier] Failed, falling back to Strategy for all:', (err as Error).message)
+    return articles.map(a => ({ ...a, theme: 'Strategy', subThemes: [] }))
   }
-
-  return results
 }
