@@ -16,9 +16,19 @@ export const authConfig: NextAuthConfig = {
   },
   callbacks: {
     authorized({ auth }) {
-      // Delegate actual role checks to middleware or server-side layouts.
-      // Just confirm the user is authenticated.
       return !!auth
+    },
+    async jwt({ token }) {
+      return token
+    },
+    async session({ session, token }) {
+      session.user = {
+        ...session.user,
+        role: token.role as string,
+        linkedinId: token.linkedinId as string,
+        projects: token.projects as string[],
+      }
+      return session
     },
   },
 }
