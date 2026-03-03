@@ -17,27 +17,26 @@ export async function synthesizePosts(
   themes: { name: string }[],
   weekLabel: string
 ): Promise<DraftPost[]> {
-  const posts: DraftPost[] = []
+  const results = await Promise.all(
+    themes.map(async (theme) => {
+      const articles = classifiedArticles.filter(a => a.theme === theme.name)
+      if (articles.length === 0) {
+        console.log(`[synthesizer] No articles for theme: ${theme.name} — skipping`)
+        return null
+      }
 
-  for (const theme of themes) {
-    const articles = classifiedArticles.filter(a => a.theme === theme.name)
-    if (articles.length === 0) {
-      console.log(`[synthesizer] No articles for theme: ${theme.name} — skipping`)
-      continue
-    }
+      const sources = articles.slice(0, 5).map(a => ({
+        title: a.title,
+        url: a.link,
+        source: a.source,
+      }))
 
-    const sources = articles.slice(0, 5).map(a => ({
-      title: a.title,
-      url: a.link,
-      source: a.source,
-    }))
+      const sourceContext = articles
+        .slice(0, 5)
+        .map(a => `Title: ${a.title}\nSource: ${a.source}\nSnippet: ${a.snippet}`)
+        .join('\n\n')
 
-    const sourceContext = articles
-      .slice(0, 5)
-      .map(a => `Title: ${a.title}\nSource: ${a.source}\nSnippet: ${a.snippet}`)
-      .join('\n\n')
-
-    const prompt = `You are a senior technology consultant writing for CIOs and technology leaders at a Lightouch Consulting blog.
+      const prompt = `You are a senior technology consultant writing for CIOs and technology leaders at a Lightouch Consulting blog.
 
 Write an original ~600-word insight article on the theme of "${theme.name}" for the week of ${weekLabel}.
 
@@ -54,26 +53,29 @@ Requirements:
 
 Write the article now:`
 
-    try {
-      const response = await client.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2048,
-        messages: [{ role: 'user', content: prompt }],
-      })
+      try {
+        const response = await client.messages.create({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 2048,
+          messages: [{ role: 'user', content: prompt }],
+        })
 
-      const text = response.content[0].type === 'text' ? response.content[0].text.trim() : ''
-      const titleMatch = text.match(/^#\s+(.+)$/m)
-      const title = titleMatch ? titleMatch[1] : `${theme.name}: Weekly Insights — ${weekLabel}`
-      const subThemes = articles
-        .flatMap(a => a.subThemes)
-        .filter((v, i, arr) => arr.indexOf(v) === i)
-        .slice(0, 3)
+        const text = response.content[0].type === 'text' ? response.content[0].text.trim() : ''
+        const titleMatch = text.match(/^#\s+(.+)$/m)
+        const title = titleMatch ? titleMatch[1] : `${theme.name}: Weekly Insights — ${weekLabel}`
+        const subThemes = articles
+          .flatMap(a => a.subThemes)
+          .filter((v, i, arr) => arr.indexOf(v) === i)
+          .slice(0, 3)
 
-      posts.push({ theme: theme.name, subThemes, title, content: text, sources, weekLabel })
-    } catch (err) {
-      console.error(`[synthesizer] Failed for theme ${theme.name}:`, (err as Error).message)
-    }
-  }
+        console.log(`[synthesizer] Done: ${theme.name}`)
+        return { theme: theme.name, subThemes, title, content: text, sources, weekLabel } as DraftPost
+      } catch (err) {
+        console.error(`[synthesizer] Failed for theme ${theme.name}:`, (err as Error).message)
+        return null
+      }
+    })
+  )
 
-  return posts
+  return results.filter((p): p is DraftPost => p !== null)
 }
