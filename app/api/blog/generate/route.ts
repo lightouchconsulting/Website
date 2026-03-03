@@ -10,12 +10,18 @@ export async function POST() {
 
   const octokit = new Octokit({ auth: process.env.GH_PAT })
 
-  await octokit.actions.createWorkflowDispatch({
-    owner: process.env.GITHUB_OWNER!,
-    repo: process.env.GITHUB_REPO!,
-    workflow_id: 'blog-generator.yml',
-    ref: 'main',
-  })
+  try {
+    await octokit.actions.createWorkflowDispatch({
+      owner: process.env.GITHUB_OWNER!,
+      repo: process.env.GITHUB_REPO!,
+      workflow_id: 'blog-generator.yml',
+      ref: 'main',
+    })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('workflow dispatch failed:', msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
 
   return NextResponse.json({ ok: true })
 }
