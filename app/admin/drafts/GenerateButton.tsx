@@ -6,15 +6,19 @@ type Phase = "idle" | "running" | "done" | "failed";
 
 export default function GenerateButton() {
   const [phase, setPhase] = useState<Phase>("idle");
+  const [error, setError] = useState<string>("");
 
   const handleGenerate = async () => {
     setPhase("running");
+    setError("");
     try {
       const res = await fetch("/api/blog/generate", { method: "POST" });
-      if (!res.ok) throw new Error();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
       setPhase("done");
       setTimeout(() => window.location.reload(), 800);
-    } catch {
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
       setPhase("failed");
     }
   };
@@ -37,7 +41,7 @@ export default function GenerateButton() {
         {busy ? "Generating…" : "Generate Articles"}
       </button>
       {phase === "done" && <p className="text-xs text-green-400">Done! Reloading…</p>}
-      {phase === "failed" && <p className="text-xs text-red-400">Failed. Check Vercel logs.</p>}
+      {phase === "failed" && <p className="text-xs text-red-400 max-w-xs text-right">Error: {error || "Unknown"}</p>}
     </div>
   );
 }

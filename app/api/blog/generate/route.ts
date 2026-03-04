@@ -1,8 +1,6 @@
 import { auth } from '@/auth'
 import { NextResponse } from 'next/server'
 import { Octokit } from '@octokit/rest'
-
-export const maxDuration = 300 // 5 minutes — requires Vercel Pro
 import Groq from 'groq-sdk'
 import Parser from 'rss-parser'
 import path from 'path'
@@ -199,7 +197,12 @@ export async function POST() {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const count = await runGeneration()
-
-  return NextResponse.json({ ok: true, count })
+  try {
+    const count = await runGeneration()
+    return NextResponse.json({ ok: true, count })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[generate] Fatal:', message)
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }
