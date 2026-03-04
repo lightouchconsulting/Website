@@ -73,23 +73,31 @@ async function main() {
   const owner = process.env.GITHUB_OWNER ?? 'lightouchconsulting'
   const repo = process.env.GITHUB_REPO ?? 'Website'
 
-  for (const post of posts) {
+  await Promise.all(posts.map(async (post) => {
     const filename = `${post.theme.toLowerCase()}.md`
     const filePath = `content/drafts/${weekLabel}/${filename}`
     const fileContent = buildFrontmatter(post) + post.content
 
     try {
+      // Get existing SHA if file already exists (required for updates)
+      let sha: string | undefined
+      try {
+        const { data } = await octokit.repos.getContent({ owner, repo, path: filePath })
+        if (!Array.isArray(data) && data.type === 'file') sha = data.sha
+      } catch { /* file doesn't exist yet */ }
+
       await octokit.repos.createOrUpdateFileContents({
         owner, repo,
         path: filePath,
         message: `feat: generate draft ${post.theme} post for ${weekLabel}`,
         content: Buffer.from(fileContent).toString('base64'),
+        ...(sha ? { sha } : {}),
       })
       console.log(`[generator] Created ${filePath}`)
     } catch (err) {
       console.error(`[generator] Failed to commit ${filePath}:`, (err as Error).message)
     }
-  }
+  }))
 
   console.log('[generator] Done.')
 }

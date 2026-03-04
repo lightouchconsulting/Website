@@ -1,7 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk'
+import Groq from 'groq-sdk'
 import type { ClassifiedArticle } from './classifier'
 
-const client = new Anthropic()
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
 export interface DraftPost {
   theme: string
@@ -54,13 +54,14 @@ Requirements:
 Write the article now:`
 
       try {
-        const response = await client.messages.create({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 2048,
+        const response = await client.chat.completions.create({
+          model: 'llama-3.1-70b-versatile',
           messages: [{ role: 'user', content: prompt }],
+          max_tokens: 2048,
+          temperature: 0.7,
         })
 
-        const text = response.content[0].type === 'text' ? response.content[0].text.trim() : ''
+        const text = response.choices[0]?.message?.content?.trim() ?? ''
         const titleMatch = text.match(/^#\s+(.+)$/m)
         const title = titleMatch ? titleMatch[1] : `${theme.name}: Weekly Insights — ${weekLabel}`
         const subThemes = articles
