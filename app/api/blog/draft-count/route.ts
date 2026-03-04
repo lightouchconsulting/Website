@@ -35,8 +35,21 @@ export async function GET() {
       } catch { /* skip */ }
     }))
 
-    return NextResponse.json({ count })
+    // Read .last-generated timestamp to detect re-generation of same week
+    let lastGenerated: string | null = null
+    try {
+      const { data: statusFile } = await octokit.repos.getContent({
+        owner: process.env.GITHUB_OWNER!,
+        repo: process.env.GITHUB_REPO!,
+        path: 'content/drafts/.last-generated',
+      })
+      if (!Array.isArray(statusFile) && statusFile.type === 'file' && statusFile.content) {
+        lastGenerated = Buffer.from(statusFile.content, 'base64').toString('utf-8').trim()
+      }
+    } catch { /* file doesn't exist yet */ }
+
+    return NextResponse.json({ count, lastGenerated })
   } catch {
-    return NextResponse.json({ count: 0 })
+    return NextResponse.json({ count: 0, lastGenerated: null })
   }
 }

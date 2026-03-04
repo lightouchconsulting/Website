@@ -127,6 +127,14 @@ Requirements:
   return posts.filter((p): p is NonNullable<typeof p> => p !== null)
 }
 
+async function getFileSha(octokit: Octokit, owner: string, repo: string, filePath: string): Promise<string | undefined> {
+  try {
+    const { data } = await octokit.repos.getContent({ owner, repo, path: filePath })
+    if (!Array.isArray(data) && data.type === 'file') return data.sha
+  } catch { /* file doesn't exist */ }
+  return undefined
+}
+
 async function runGeneration() {
   const weekLabel = getWeekLabel()
   console.log(`[generate] Starting for ${weekLabel}`)
@@ -167,16 +175,32 @@ ${sourcesYaml}
     const filePath = `content/drafts/${weekLabel}/${post.theme.toLowerCase()}.md`
 
     try {
+      const sha = await getFileSha(octokit, owner, repo, filePath)
       await octokit.repos.createOrUpdateFileContents({
         owner, repo, path: filePath,
         message: `feat: generate draft ${post.theme} post for ${weekLabel}`,
         content: Buffer.from(content).toString('base64'),
+        ...(sha ? { sha } : {}),
       })
       console.log(`[generate] Committed ${filePath}`)
     } catch (err) {
       console.error(`[generate] Failed to commit ${filePath}:`, (err as Error).message)
     }
   }))
+
+  // Write a timestamp marker so the UI can detect completion
+  try {
+    const statusPath = 'content/drafts/.last-generated'
+    const sha = await getFileSha(octokit, owner, repo, statusPath)
+    await octokit.repos.createOrUpdateFileContents({
+      owner, repo, path: statusPath,
+      message: `chore: update generation timestamp for ${weekLabel}`,
+      content: Buffer.from(new Date().toISOString()).toString('base64'),
+      ...(sha ? { sha } : {}),
+    })
+  } catch (err) {
+    console.error('[generate] Failed to write status file:', (err as Error).message)
+  }
 
   console.log('[generate] Done.')
 }

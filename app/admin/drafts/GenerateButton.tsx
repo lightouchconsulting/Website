@@ -10,6 +10,7 @@ export default function GenerateButton() {
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startCountRef = useRef<number>(0);
+  const startLastGeneratedRef = useRef<string | null>(null);
 
   const stopAll = () => {
     if (pollRef.current) clearInterval(pollRef.current);
@@ -39,16 +40,22 @@ export default function GenerateButton() {
       return;
     }
 
-    // Get current draft count to detect when new drafts appear
+    // Snapshot current state so we can detect when generation completes
     const countRes = await fetch("/api/blog/draft-count");
-    startCountRef.current = countRes.ok ? (await countRes.json()).count : 0;
+    if (countRes.ok) {
+      const data = await countRes.json();
+      startCountRef.current = data.count ?? 0;
+      startLastGeneratedRef.current = data.lastGenerated ?? null;
+    }
 
-    // Poll for new drafts every 3 seconds
+    // Poll every 3 seconds — done when count increases OR lastGenerated changes
     pollRef.current = setInterval(async () => {
       const r = await fetch("/api/blog/draft-count");
       if (!r.ok) return;
-      const { count } = await r.json();
-      if (count > startCountRef.current) {
+      const { count, lastGenerated } = await r.json();
+      const newDrafts = count > startCountRef.current;
+      const regenerated = lastGenerated && lastGenerated !== startLastGeneratedRef.current;
+      if (newDrafts || regenerated) {
         stopAll();
         setPhase("done");
         setTimeout(() => window.location.reload(), 1000);
