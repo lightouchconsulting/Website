@@ -1,15 +1,20 @@
-import fs from 'fs/promises'
-import path from 'path'
+import { Octokit } from '@octokit/rest'
 import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import DraftActions from './DraftActions'
 
 async function getDraft(week: string, slug: string) {
-  const filePath = path.join(process.cwd(), 'content', 'drafts', week, `${slug}.md`)
+  const octokit = new Octokit({ auth: process.env.GH_PAT })
+  const owner = process.env.GITHUB_OWNER!
+  const repo = process.env.GITHUB_REPO!
+  const filePath = `content/drafts/${week}/${slug}.md`
+
   try {
-    const raw = await fs.readFile(filePath, 'utf-8')
-    const { data, content } = matter(raw)
-    return { week, slug, raw, data, content }
+    const { data } = await octokit.repos.getContent({ owner, repo, path: filePath })
+    if (Array.isArray(data) || data.type !== 'file') return null
+    const raw = Buffer.from(data.content, 'base64').toString('utf-8')
+    const { data: fm, content } = matter(raw)
+    return { week, slug, raw, data: fm, content }
   } catch {
     return null
   }

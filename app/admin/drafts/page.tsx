@@ -1,5 +1,4 @@
-import fs from 'fs/promises'
-import path from 'path'
+import { Octokit } from '@octokit/rest'
 import matter from 'gray-matter'
 import Link from 'next/link'
 import GenerateButton from './GenerateButton'
@@ -12,27 +11,43 @@ interface DraftMeta {
 }
 
 async function getDrafts(): Promise<DraftMeta[]> {
-  const draftsDir = path.join(process.cwd(), 'content', 'drafts')
+  const octokit = new Octokit({ auth: process.env.GH_PAT })
+  const owner = process.env.GITHUB_OWNER!
+  const repo = process.env.GITHUB_REPO!
+
   try {
-    const weeks = await fs.readdir(draftsDir)
-    const drafts: DraftMeta[] = []
-    for (const week of weeks) {
-      const weekPath = path.join(draftsDir, week)
-      const stat = await fs.stat(weekPath)
-      if (!stat.isDirectory()) continue
-      const files = await fs.readdir(weekPath)
-      for (const file of files.filter(f => f.endsWith('.md'))) {
-        const raw = await fs.readFile(path.join(weekPath, file), 'utf-8')
-        const { data } = matter(raw)
-        drafts.push({
-          week,
-          slug: file.replace('.md', ''),
-          title: data.title ?? file,
-          theme: data.theme ?? '',
-        })
-      }
-    }
-    return drafts
+    const { data } = await octokit.repos.getContent({ owner, repo, path: 'content/drafts' })
+    if (!Array.isArray(data)) return []
+
+    const weeks = data.filter(item => item.type === 'dir')
+
+    const draftsByWeek = await Promise.all(weeks.map(async (week) => {
+      try {
+        const { data: files } = await octokit.repos.getContent({ owner, repo, path: week.path })
+        if (!Array.isArray(files)) return []
+
+        const mdFiles = files.filter(f => f.name.endsWith('.md'))
+
+        const drafts = await Promise.all(mdFiles.map(async (file) => {
+          try {
+            const { data: fileData } = await octokit.repos.getContent({ owner, repo, path: file.path })
+            if (Array.isArray(fileData) || fileData.type !== 'file') return null
+            const raw = Buffer.from(fileData.content, 'base64').toString('utf-8')
+            const { data: fm } = matter(raw)
+            return {
+              week: week.name,
+              slug: file.name.replace('.md', ''),
+              title: fm.title ?? file.name,
+              theme: fm.theme ?? '',
+            } satisfies DraftMeta
+          } catch { return null }
+        }))
+
+        return drafts.filter((d): d is DraftMeta => d !== null)
+      } catch { return [] }
+    }))
+
+    return draftsByWeek.flat().sort((a, b) => b.week.localeCompare(a.week))
   } catch {
     return []
   }
