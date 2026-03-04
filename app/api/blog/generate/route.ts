@@ -1,7 +1,8 @@
 import { auth } from '@/auth'
 import { NextResponse } from 'next/server'
-import { after } from 'next/server'
 import { Octokit } from '@octokit/rest'
+
+export const maxDuration = 300 // 5 minutes — requires Vercel Pro
 import Groq from 'groq-sdk'
 import Parser from 'rss-parser'
 import path from 'path'
@@ -135,7 +136,7 @@ async function getFileSha(octokit: Octokit, owner: string, repo: string, filePat
   return undefined
 }
 
-async function runGeneration() {
+async function runGeneration(): Promise<number> {
   const weekLabel = getWeekLabel()
   console.log(`[generate] Starting for ${weekLabel}`)
 
@@ -144,7 +145,7 @@ async function runGeneration() {
 
   if (articles.length === 0) {
     console.log('[generate] No articles found')
-    return
+    return 0
   }
 
   const posts = await classifyAndSynthesize(articles, weekLabel)
@@ -188,21 +189,8 @@ ${sourcesYaml}
     }
   }))
 
-  // Write a timestamp marker so the UI can detect completion
-  try {
-    const statusPath = 'content/drafts/.last-generated'
-    const sha = await getFileSha(octokit, owner, repo, statusPath)
-    await octokit.repos.createOrUpdateFileContents({
-      owner, repo, path: statusPath,
-      message: `chore: update generation timestamp for ${weekLabel}`,
-      content: Buffer.from(new Date().toISOString()).toString('base64'),
-      ...(sha ? { sha } : {}),
-    })
-  } catch (err) {
-    console.error('[generate] Failed to write status file:', (err as Error).message)
-  }
-
   console.log('[generate] Done.')
+  return posts.length
 }
 
 export async function POST() {
@@ -211,7 +199,7 @@ export async function POST() {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  after(runGeneration())
+  const count = await runGeneration()
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true, count })
 }

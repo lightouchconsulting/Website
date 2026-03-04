@@ -1,75 +1,22 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 type Phase = "idle" | "running" | "done" | "failed";
 
 export default function GenerateButton() {
   const [phase, setPhase] = useState<Phase>("idle");
-  const [elapsed, setElapsed] = useState(0);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const startCountRef = useRef<number>(0);
-  const startLastGeneratedRef = useRef<string | null>(null);
-
-  const stopAll = () => {
-    if (pollRef.current) clearInterval(pollRef.current);
-    if (timerRef.current) clearInterval(timerRef.current);
-    pollRef.current = null;
-    timerRef.current = null;
-  };
-
-  useEffect(() => () => stopAll(), []);
 
   const handleGenerate = async () => {
     setPhase("running");
-    setElapsed(0);
-
-    // Start elapsed timer
-    const startTime = Date.now();
-    timerRef.current = setInterval(() => {
-      setElapsed(Math.floor((Date.now() - startTime) / 1000));
-    }, 1000);
-
     try {
       const res = await fetch("/api/blog/generate", { method: "POST" });
       if (!res.ok) throw new Error();
+      setPhase("done");
+      setTimeout(() => window.location.reload(), 800);
     } catch {
-      stopAll();
       setPhase("failed");
-      return;
     }
-
-    // Snapshot current state so we can detect when generation completes
-    const countRes = await fetch("/api/blog/draft-count");
-    if (countRes.ok) {
-      const data = await countRes.json();
-      startCountRef.current = data.count ?? 0;
-      startLastGeneratedRef.current = data.lastGenerated ?? null;
-    }
-
-    // Poll every 3 seconds — done when count increases OR lastGenerated changes
-    pollRef.current = setInterval(async () => {
-      const r = await fetch("/api/blog/draft-count");
-      if (!r.ok) return;
-      const { count, lastGenerated } = await r.json();
-      const newDrafts = count > startCountRef.current;
-      const regenerated = lastGenerated && lastGenerated !== startLastGeneratedRef.current;
-      if (newDrafts || regenerated) {
-        stopAll();
-        setPhase("done");
-        setTimeout(() => window.location.reload(), 1000);
-      }
-    }, 3000);
-
-    // Timeout after 2 minutes
-    setTimeout(() => {
-      if (pollRef.current) {
-        stopAll();
-        setPhase("done");
-        window.location.reload();
-      }
-    }, 120000);
   };
 
   const busy = phase === "running";
@@ -87,10 +34,10 @@ export default function GenerateButton() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
           </svg>
         )}
-        {busy ? `Generating… ${elapsed}s` : "Generate Articles"}
+        {busy ? "Generating…" : "Generate Articles"}
       </button>
-      {phase === "done" && <p className="text-xs text-green-400">Done! Reloading drafts…</p>}
-      {phase === "failed" && <p className="text-xs text-red-400">Failed to start generation.</p>}
+      {phase === "done" && <p className="text-xs text-green-400">Done! Reloading…</p>}
+      {phase === "failed" && <p className="text-xs text-red-400">Failed. Check Vercel logs.</p>}
     </div>
   );
 }
