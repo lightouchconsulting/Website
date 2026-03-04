@@ -191,6 +191,23 @@ ${sourcesYaml}
   return posts.length
 }
 
+export async function GET() {
+  const session = await auth()
+  if (!session || session.user?.role !== 'admin') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+  const feedsPath = path.join(process.cwd(), 'blog-generator', 'config', 'feeds.json')
+  return NextResponse.json({
+    auth: 'ok',
+    role: session.user?.role,
+    groqKey: !!process.env.GROQ_API_KEY,
+    ghPat: !!process.env.GH_PAT,
+    ghOwner: process.env.GITHUB_OWNER,
+    ghRepo: process.env.GITHUB_REPO,
+    feedsFileExists: fs.existsSync(feedsPath),
+  })
+}
+
 export async function POST() {
   const session = await auth()
   if (!session || session.user?.role !== 'admin') {
