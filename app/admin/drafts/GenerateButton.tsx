@@ -2,81 +2,70 @@
 
 import { useState, useEffect, useRef } from "react";
 
-type Phase = "idle" | "triggering" | "queued" | "in_progress" | "done" | "failed";
-
-function elapsed(startedAt: string | null): string {
-  if (!startedAt) return "";
-  const secs = Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000);
-  const m = Math.floor(secs / 60);
-  const s = secs % 60;
-  return m > 0 ? `${m}m ${s}s` : `${s}s`;
-}
+type Phase = "idle" | "running" | "done" | "failed";
 
 export default function GenerateButton() {
   const [phase, setPhase] = useState<Phase>("idle");
-  const [startedAt, setStartedAt] = useState<string | null>(null);
-  const [tick, setTick] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const startCountRef = useRef<number>(0);
 
-  const stopPolling = () => {
+  const stopAll = () => {
     if (pollRef.current) clearInterval(pollRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
     pollRef.current = null;
+    timerRef.current = null;
   };
 
-  const poll = async () => {
-    try {
-      const res = await fetch("/api/blog/generate/status");
-      const data = await res.json();
-      if (data.status === "queued") {
-        setPhase("queued");
-      } else if (data.status === "in_progress") {
-        setPhase("in_progress");
-        setStartedAt(data.started_at ?? null);
-      } else if (data.status === "completed") {
-        stopPolling();
-        setPhase(data.conclusion === "success" ? "done" : "failed");
-        if (data.conclusion === "success") {
-          setTimeout(() => window.location.reload(), 2000);
-        }
-      }
-    } catch {
-      // keep polling
-    }
-  };
-
-  useEffect(() => {
-    if (tick > 0) poll();
-  }, [tick]);
-
-  const startPolling = () => {
-    stopPolling();
-    pollRef.current = setInterval(() => setTick((t) => t + 1), 5000);
-  };
-
-  useEffect(() => () => stopPolling(), []);
+  useEffect(() => () => stopAll(), []);
 
   const handleGenerate = async () => {
-    setPhase("triggering");
+    setPhase("running");
+    setElapsed(0);
+
+    // Start elapsed timer
+    const startTime = Date.now();
+    timerRef.current = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+
     try {
       const res = await fetch("/api/blog/generate", { method: "POST" });
       if (!res.ok) throw new Error();
-      setPhase("queued");
-      startPolling();
     } catch {
+      stopAll();
       setPhase("failed");
+      return;
     }
+
+    // Get current draft count to detect when new drafts appear
+    const countRes = await fetch("/api/blog/draft-count");
+    startCountRef.current = countRes.ok ? (await countRes.json()).count : 0;
+
+    // Poll for new drafts every 3 seconds
+    pollRef.current = setInterval(async () => {
+      const r = await fetch("/api/blog/draft-count");
+      if (!r.ok) return;
+      const { count } = await r.json();
+      if (count > startCountRef.current) {
+        stopAll();
+        setPhase("done");
+        setTimeout(() => window.location.reload(), 1000);
+      }
+    }, 3000);
+
+    // Timeout after 2 minutes
+    setTimeout(() => {
+      if (pollRef.current) {
+        stopAll();
+        setPhase("done");
+        window.location.reload();
+      }
+    }, 120000);
   };
 
-  const messages: Record<Phase, string> = {
-    idle: "",
-    triggering: "Starting workflow…",
-    queued: "Queued — waiting for runner…",
-    in_progress: `Running — fetching feeds and writing posts… ${elapsed(startedAt)}`,
-    done: "Done! Loading drafts…",
-    failed: "Generation failed. Check GitHub Actions for details.",
-  };
-
-  const busy = phase === "triggering" || phase === "queued" || phase === "in_progress";
+  const busy = phase === "running";
 
   return (
     <div className="flex flex-col items-end gap-2">
@@ -91,13 +80,10 @@ export default function GenerateButton() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
           </svg>
         )}
-        {busy ? "Generating…" : "Generate Articles"}
+        {busy ? `Generating… ${elapsed}s` : "Generate Articles"}
       </button>
-      {phase !== "idle" && (
-        <p className={`text-xs ${phase === "failed" ? "text-red-400" : phase === "done" ? "text-green-400" : "text-gray-400"}`}>
-          {messages[phase]}
-        </p>
-      )}
+      {phase === "done" && <p className="text-xs text-green-400">Done! Reloading drafts…</p>}
+      {phase === "failed" && <p className="text-xs text-red-400">Failed to start generation.</p>}
     </div>
   );
 }
