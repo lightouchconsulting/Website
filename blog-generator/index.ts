@@ -70,8 +70,8 @@ async function main() {
   console.log(`[generator] Generated ${posts.length} posts`)
 
   const octokit = new Octokit({ auth: process.env.GH_PAT })
-  const owner = process.env.GITHUB_OWNER ?? 'lightouchconsulting'
-  const repo = process.env.GITHUB_REPO ?? 'Website'
+  const owner = process.env.GH_OWNER ?? process.env.GITHUB_OWNER ?? 'lightouchconsulting'
+  const repo = process.env.GH_REPO ?? process.env.GITHUB_REPO ?? 'Website'
 
   await Promise.all(posts.map(async (post) => {
     const filename = `${post.theme.toLowerCase()}.md`
