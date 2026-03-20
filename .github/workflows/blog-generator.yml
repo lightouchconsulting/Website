@@ -22,12 +22,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify secrets
+        run: |
+          if [ -z "$GROQ_API_KEY" ]; then echo "ERROR: GROQ_API_KEY secret is not set" && exit 1; fi
+          if [ -z "$GH_PAT" ]; then echo "ERROR: GH_PAT secret is not set" && exit 1; fi
+          echo "Secrets verified OK"
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+
       - name: Run blog generator
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GH_PAT: ${{ secrets.GH_PAT }}
           GH_OWNER: ${{ github.repository_owner }}
-          GH_REPO: ${{ github.event.repository.name }}
+          GH_REPO: Website
         run: npm run blog-generator
 
       - name: Report completion
