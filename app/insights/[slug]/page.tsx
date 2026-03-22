@@ -16,7 +16,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </Link>
 
       <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">
-        {post.theme} · {post.weekLabel}
+        {post.theme} · Issue {post.issueNumber}
       </p>
       <h1 className="text-3xl font-bold text-white mb-6">{post.title}</h1>
 

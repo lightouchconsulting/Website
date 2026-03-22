@@ -14,6 +14,7 @@ export interface Post {
   date: string
   status: string
   excerpt: string
+  issueNumber: number
 }
 
 export interface FullPost extends Post {
@@ -44,14 +45,20 @@ export async function getPosts(): Promise<Post[]> {
               date: fm.date ? new Date(fm.date).toISOString().slice(0, 10) : '',
               status: fm.status ?? 'draft',
               excerpt: content.trim().split('\n').find((l: string) => l && !l.startsWith('#')) ?? '',
+              issueNumber: 0,
             } satisfies Post
           } catch { return null }
         })
     )
 
-    return posts
+    const published = posts
       .filter((p): p is Post => p !== null && p.status === 'published')
-      .sort((a, b) => b.date.localeCompare(a.date))
+      .sort((a, b) => a.date.localeCompare(b.date))
+
+    // Assign sequential issue numbers oldest-first, then return newest-first
+    return published
+      .map((p, i) => ({ ...p, issueNumber: i + 1 }))
+      .reverse()
   } catch {
     return []
   }
@@ -60,10 +67,14 @@ export async function getPosts(): Promise<Post[]> {
 export async function getPost(slug: string): Promise<FullPost | null> {
   if (!/^[\w-]+$/.test(slug)) return null
   try {
-    const { data } = await octokit.repos.getContent({ owner, repo, path: `content/posts/${slug}.md` })
+    const [{ data }, allPosts] = await Promise.all([
+      octokit.repos.getContent({ owner, repo, path: `content/posts/${slug}.md` }),
+      getPosts(),
+    ])
     if (Array.isArray(data) || data.type !== 'file') return null
     const raw = Buffer.from(data.content, 'base64').toString('utf-8')
     const { data: fm, content } = matter(raw)
+    const issueNumber = allPosts.find(p => p.slug === (fm.slug ?? slug))?.issueNumber ?? 0
     const post = {
       slug: fm.slug ?? slug,
       title: fm.title ?? '',
@@ -75,6 +86,7 @@ export async function getPost(slug: string): Promise<FullPost | null> {
       sources: fm.sources ?? [],
       excerpt: content.trim().split('\n').find((l: string) => l && !l.startsWith('#')) ?? '',
       content,
+      issueNumber,
     }
     if (post.status !== 'published') return null
     return post

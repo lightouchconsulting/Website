@@ -19,7 +19,7 @@ export default async function BlogPage() {
         {posts.map(post => (
           <article key={post.slug} className="border-b border-gray-800 pb-8">
             <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">
-              {post.theme} · {post.weekLabel}
+              {post.theme} · Issue {post.issueNumber}
             </p>
             <h2 className="text-xl font-semibold text-white mb-2">
               <Link href={`/insights/${post.slug}`} className="hover:text-gray-300 transition">
