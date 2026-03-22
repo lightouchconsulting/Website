@@ -9,6 +9,10 @@ export default function AdminDashboard() {
           <h2 className="font-semibold text-white">Draft Posts</h2>
           <p className="text-sm text-gray-400">Review, edit, and publish weekly AI insights</p>
         </Link>
+        <Link href="/admin/posts" className="block p-4 border border-gray-700 rounded hover:border-white transition">
+          <h2 className="font-semibold text-white">Published Posts</h2>
+          <p className="text-sm text-gray-400">Edit published insights articles</p>
+        </Link>
         <Link href="/admin/projects" className="block p-4 border border-gray-700 rounded hover:border-white transition">
           <h2 className="font-semibold text-white">Projects</h2>
           <p className="text-sm text-gray-400">Manage client project spaces and team members</p>
