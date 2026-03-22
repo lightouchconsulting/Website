@@ -25,14 +25,24 @@ export async function synthesizePosts(
         return null
       }
 
-      const sources = articles.slice(0, 5).map(a => ({
+      // Pick up to 2 articles per source, max 5 total, to ensure publisher diversity
+      const diverse: typeof articles = []
+      const countBySource: Record<string, number> = {}
+      for (const a of articles) {
+        const n = countBySource[a.source] ?? 0
+        if (n < 2 && diverse.length < 5) {
+          diverse.push(a)
+          countBySource[a.source] = n + 1
+        }
+      }
+
+      const sources = diverse.map(a => ({
         title: a.title,
         url: a.link,
         source: a.source,
       }))
 
-      const sourceContext = articles
-        .slice(0, 5)
+      const sourceContext = diverse
         .map(a => `Title: ${a.title}\nSource: ${a.source}\nSnippet: ${a.snippet}`)
         .join('\n\n')
 
