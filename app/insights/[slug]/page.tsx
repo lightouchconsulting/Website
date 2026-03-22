@@ -1,11 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getPosts, getPost } from '@/lib/blog'
+import { getPost } from '@/lib/blog'
 
-export async function generateStaticParams() {
-  const posts = await getPosts()
-  return posts.map(p => ({ slug: p.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params

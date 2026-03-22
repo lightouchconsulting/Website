@@ -1,6 +1,9 @@
-import fs from 'fs/promises'
-import path from 'path'
+import { Octokit } from '@octokit/rest'
 import matter from 'gray-matter'
+
+const octokit = new Octokit({ auth: process.env.GH_PAT })
+const owner = process.env.GITHUB_OWNER!
+const repo = process.env.GITHUB_REPO!
 
 export interface Post {
   slug: string
@@ -19,28 +22,36 @@ export interface FullPost extends Post {
 }
 
 export async function getPosts(): Promise<Post[]> {
-  const dir = path.join(process.cwd(), 'content', 'posts')
   try {
-    const files = await fs.readdir(dir)
+    const { data } = await octokit.repos.getContent({ owner, repo, path: 'content/posts' })
+    if (!Array.isArray(data)) return []
+
     const posts = await Promise.all(
-      files
-        .filter(f => f.endsWith('.md'))
+      data
+        .filter(f => f.type === 'file' && f.name.endsWith('.md'))
         .map(async file => {
-          const raw = await fs.readFile(path.join(dir, file), 'utf-8')
-          const { data, content } = matter(raw)
-          return {
-            slug: data.slug ?? file.replace('.md', ''),
-            title: data.title ?? '',
-            theme: data.theme ?? '',
-            subThemes: data.subThemes ?? [],
-            weekLabel: data.weekLabel ?? '',
-            date: data.date ? new Date(data.date).toISOString().slice(0, 10) : '',
-            status: data.status ?? 'draft',
-            excerpt: content.trim().split('\n').find(l => l && !l.startsWith('#')) ?? '',
-          } satisfies Post
+          try {
+            const { data: fileData } = await octokit.repos.getContent({ owner, repo, path: file.path })
+            if (Array.isArray(fileData) || fileData.type !== 'file') return null
+            const raw = Buffer.from(fileData.content, 'base64').toString('utf-8')
+            const { data: fm, content } = matter(raw)
+            return {
+              slug: fm.slug ?? file.name.replace('.md', ''),
+              title: fm.title ?? '',
+              theme: fm.theme ?? '',
+              subThemes: fm.subThemes ?? [],
+              weekLabel: fm.weekLabel ?? '',
+              date: fm.date ? new Date(fm.date).toISOString().slice(0, 10) : '',
+              status: fm.status ?? 'draft',
+              excerpt: content.trim().split('\n').find((l: string) => l && !l.startsWith('#')) ?? '',
+            } satisfies Post
+          } catch { return null }
         })
     )
-    return posts.filter(p => p.status === 'published').sort((a, b) => b.date.localeCompare(a.date))
+
+    return posts
+      .filter((p): p is Post => p !== null && p.status === 'published')
+      .sort((a, b) => b.date.localeCompare(a.date))
   } catch {
     return []
   }
@@ -48,19 +59,20 @@ export async function getPosts(): Promise<Post[]> {
 
 export async function getPost(slug: string): Promise<FullPost | null> {
   if (!/^[\w-]+$/.test(slug)) return null
-  const filePath = path.join(process.cwd(), 'content', 'posts', `${slug}.md`)
   try {
-    const raw = await fs.readFile(filePath, 'utf-8')
-    const { data, content } = matter(raw)
+    const { data } = await octokit.repos.getContent({ owner, repo, path: `content/posts/${slug}.md` })
+    if (Array.isArray(data) || data.type !== 'file') return null
+    const raw = Buffer.from(data.content, 'base64').toString('utf-8')
+    const { data: fm, content } = matter(raw)
     const post = {
-      slug: data.slug ?? slug,
-      title: data.title ?? '',
-      theme: data.theme ?? '',
-      subThemes: data.subThemes ?? [],
-      weekLabel: data.weekLabel ?? '',
-      date: data.date ? new Date(data.date).toISOString().slice(0, 10) : '',
-      status: data.status ?? 'draft',
-      sources: data.sources ?? [],
+      slug: fm.slug ?? slug,
+      title: fm.title ?? '',
+      theme: fm.theme ?? '',
+      subThemes: fm.subThemes ?? [],
+      weekLabel: fm.weekLabel ?? '',
+      date: fm.date ? new Date(fm.date).toISOString().slice(0, 10) : '',
+      status: fm.status ?? 'draft',
+      sources: fm.sources ?? [],
       excerpt: content.trim().split('\n').find((l: string) => l && !l.startsWith('#')) ?? '',
       content,
     }
