@@ -27,9 +27,10 @@ function buildFrontmatter(post: {
   theme: string
   subThemes: string[]
   weekLabel: string
+  date: string
   sources: { title: string; url: string; source: string }[]
 }): string {
-  const slug = `${post.weekLabel}-${post.theme.toLowerCase()}-insights`
+  const slug = `${post.date}-${post.theme.toLowerCase()}-insights`
   const sourcesYaml = post.sources
     .map(s => `  - title: "${s.title.replace(/"/g, '\\"')}"\n    url: ${s.url}\n    source: "${s.source.replace(/"/g, '\\"')}"`)
     .join('\n')
@@ -72,11 +73,12 @@ async function main() {
   const octokit = new Octokit({ auth: process.env.GH_PAT })
   const owner = process.env.GH_OWNER ?? process.env.GITHUB_OWNER ?? 'lightouchconsulting'
   const repo = process.env.GH_REPO ?? process.env.GITHUB_REPO ?? 'Website'
+  const date = new Date().toISOString().split('T')[0]
 
   await Promise.all(posts.map(async (post) => {
     const filename = `${post.theme.toLowerCase()}.md`
-    const filePath = `content/drafts/${weekLabel}/${filename}`
-    const fileContent = buildFrontmatter(post) + post.content
+    const filePath = `content/drafts/${date}/${filename}`
+    const fileContent = buildFrontmatter({ ...post, date }) + post.content
 
     try {
       // Get existing SHA if file already exists (required for updates)
@@ -89,7 +91,7 @@ async function main() {
       await octokit.repos.createOrUpdateFileContents({
         owner, repo,
         path: filePath,
-        message: `feat: generate draft ${post.theme} post for ${weekLabel}`,
+        message: `feat: generate draft ${post.theme} post for ${date}`,
         content: Buffer.from(fileContent).toString('base64'),
         ...(sha ? { sha } : {}),
       })
