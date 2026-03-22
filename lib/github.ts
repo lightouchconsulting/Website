@@ -12,11 +12,18 @@ export async function getFileContent(filePath: string): Promise<{ content: strin
 }
 
 export async function createFile(filePath: string, content: string, message: string) {
+  let sha: string | undefined
+  try {
+    const { data } = await octokit.repos.getContent({ owner, repo, path: filePath })
+    if (!Array.isArray(data) && data.type === 'file') sha = data.sha
+  } catch { /* file doesn't exist yet */ }
+
   await octokit.repos.createOrUpdateFileContents({
     owner, repo,
     path: filePath,
     message,
     content: Buffer.from(content).toString('base64'),
+    ...(sha ? { sha } : {}),
   })
 }
 

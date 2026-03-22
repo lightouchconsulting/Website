@@ -35,7 +35,13 @@ export async function POST(request: NextRequest) {
     publishedContent = content.replace(/^(---\n[\s\S]*?)\n---/m, '$1\nstatus: published\n---')
   }
 
-  await moveFile(fromPath, toPath, publishedContent, `feat: publish ${publishedSlug}`)
+  try {
+    await moveFile(fromPath, toPath, publishedContent, `feat: publish ${publishedSlug}`)
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[approve] Failed:', message)
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 
   return NextResponse.json({ ok: true })
 }
