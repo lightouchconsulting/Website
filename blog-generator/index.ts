@@ -49,31 +49,71 @@ ${sourcesYaml}
 `
 }
 
+const USED_URLS_PATH = 'content/.used-articles.json'
+
+async function getUsedUrls(octokit: Octokit, owner: string, repo: string): Promise<Set<string>> {
+  try {
+    const { data } = await octokit.repos.getContent({ owner, repo, path: USED_URLS_PATH })
+    if (!Array.isArray(data) && data.type === 'file') {
+      const urls: string[] = JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'))
+      return new Set(urls)
+    }
+  } catch { /* file doesn't exist yet */ }
+  return new Set()
+}
+
+async function saveUsedUrls(octokit: Octokit, owner: string, repo: string, urls: Set<string>) {
+  // Keep only the most recent 1000 URLs to prevent unbounded growth
+  const trimmed = [...urls].slice(-1000)
+  const content = JSON.stringify(trimmed, null, 2)
+
+  let sha: string | undefined
+  try {
+    const { data } = await octokit.repos.getContent({ owner, repo, path: USED_URLS_PATH })
+    if (!Array.isArray(data) && data.type === 'file') sha = data.sha
+  } catch { /* file doesn't exist yet */ }
+
+  await octokit.repos.createOrUpdateFileContents({
+    owner, repo,
+    path: USED_URLS_PATH,
+    message: 'chore: update used article URLs',
+    content: Buffer.from(content).toString('base64'),
+    ...(sha ? { sha } : {}),
+  })
+}
+
 async function main() {
   console.log('[generator] Starting blog generation...')
   const weekLabel = getWeekLabel()
   console.log(`[generator] Week: ${weekLabel}`)
 
-  console.log('[generator] Scraping feeds...')
-  const articles = await scrapeFeeds(feedsConfig.feeds)
-  console.log(`[generator] Found ${articles.length} articles`)
-
-  if (articles.length === 0) {
-    console.log('[generator] No articles found — exiting')
-    return
-  }
-
-  console.log('[generator] Classifying articles...')
-  const classified = await classifyArticles(articles, themesConfig.themes)
-
-  console.log('[generator] Synthesizing posts...')
-  const posts = await synthesizePosts(classified, themesConfig.themes, weekLabel)
-  console.log(`[generator] Generated ${posts.length} posts`)
-
   const octokit = new Octokit({ auth: process.env.GH_PAT })
   const owner = process.env.GH_OWNER ?? process.env.GITHUB_OWNER ?? 'lightouchconsulting'
   const repo = process.env.GH_REPO ?? process.env.GITHUB_REPO ?? 'Website'
   const date = new Date().toISOString().split('T')[0]
+
+  console.log('[generator] Loading used article URLs...')
+  const usedUrls = await getUsedUrls(octokit, owner, repo)
+  console.log(`[generator] ${usedUrls.size} URLs already used`)
+
+  console.log('[generator] Scraping feeds...')
+  const articles = await scrapeFeeds(feedsConfig.feeds)
+  console.log(`[generator] Found ${articles.length} articles`)
+
+  const freshArticles = articles.filter(a => !usedUrls.has(a.link))
+  console.log(`[generator] ${freshArticles.length} fresh articles after filtering ${articles.length - freshArticles.length} already-used`)
+
+  if (freshArticles.length === 0) {
+    console.log('[generator] No fresh articles found — exiting')
+    return
+  }
+
+  console.log('[generator] Classifying articles...')
+  const classified = await classifyArticles(freshArticles, themesConfig.themes)
+
+  console.log('[generator] Synthesizing posts...')
+  const posts = await synthesizePosts(classified, themesConfig.themes, weekLabel)
+  console.log(`[generator] Generated ${posts.length} posts`)
 
   await Promise.all(posts.map(async (post) => {
     const filename = `${post.theme.toLowerCase()}.md`
@@ -81,7 +121,6 @@ async function main() {
     const fileContent = buildFrontmatter({ ...post, date }) + post.content
 
     try {
-      // Get existing SHA if file already exists (required for updates)
       let sha: string | undefined
       try {
         const { data } = await octokit.repos.getContent({ owner, repo, path: filePath })
@@ -100,6 +139,11 @@ async function main() {
       console.error(`[generator] Failed to commit ${filePath}:`, (err as Error).message)
     }
   }))
+
+  // Save all used URLs (existing + newly scraped fresh articles)
+  const updatedUrls = new Set([...usedUrls, ...freshArticles.map(a => a.link)])
+  await saveUsedUrls(octokit, owner, repo, updatedUrls)
+  console.log(`[generator] Saved ${updatedUrls.size} used URLs`)
 
   console.log('[generator] Done.')
 }
