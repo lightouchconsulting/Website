@@ -54,6 +54,7 @@ Use these recent news articles as context and inspiration (do not quote or summa
 ${sourceContext}
 
 Requirements:
+- Write in UK English (use British spelling: organisation, recognise, colour, programme, etc.)
 - Write for a CIO audience — strategic, direct, no fluff
 - 3-4 sections with ## headings
 - End with a practical "Your Next Step" section
