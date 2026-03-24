@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Lightouch™ Consulting",
@@ -24,6 +25,7 @@ export default function RootLayout({
       </head>
       <body className="bg-black text-gray-200 font-sans">
         <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <Analytics />
       </body>
     </html>
   );
