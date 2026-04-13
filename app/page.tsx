@@ -122,33 +122,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Who We Are */}
-      <section id="who" className="py-20 bg-gray-900">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-6 text-center">Who We Are</h2>
-          <div className="grid gap-8 md:grid-cols-3 mb-10">
-            <div className="fade-card p-6 bg-black rounded-2xl shadow-lg">
-              <i className="fa-solid fa-user-tie text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Built for CIOs</h3>
-              <p className="text-gray-400">A new kind of consultancy for technology leaders who expect more from their advisors.</p>
-            </div>
-            <div className="fade-card p-6 bg-black rounded-2xl shadow-lg">
-              <i className="fa-solid fa-robot text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">GenAI + Expertise</h3>
-              <p className="text-gray-400">Tier 1 Consultants + Generative AI to deliver rapid, high-quality results.</p>
-            </div>
-            <div className="fade-card p-6 bg-black rounded-2xl shadow-lg">
-              <i className="fa-solid fa-hand-holding-heart text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Enablement First</h3>
-              <p className="text-gray-400">We leave you fully equipped to keep moving forward, independently.</p>
-            </div>
-          </div>
-          <div className="text-center">
-            <a href="#methods" className="btn-secondary">Discover our story</a>
-          </div>
-        </div>
-      </section>
-
       {/* What We Do */}
       <section id="what" className="py-20 bg-black">
         <div className="max-w-6xl mx-auto px-6">
@@ -156,6 +129,25 @@ export default function Home() {
           <p className="text-center text-gray-300 max-w-3xl mx-auto mb-10">
             Lightouch helps CIOs and technology leaders achieve rapid, high-quality results using GenerativeAI.
           </p>
+
+          {/* Who we are cards */}
+          <div className="grid gap-8 md:grid-cols-3 mb-10">
+            <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
+              <i className="fa-solid fa-user-tie text-white-400 text-4xl mb-4"></i>
+              <h3 className="text-xl font-semibold mb-2">Built for CIOs</h3>
+              <p className="text-gray-400">A new kind of consultancy for technology leaders who expect more from their advisors.</p>
+            </div>
+            <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
+              <i className="fa-solid fa-robot text-white-400 text-4xl mb-4"></i>
+              <h3 className="text-xl font-semibold mb-2">GenAI + Expertise</h3>
+              <p className="text-gray-400">Tier 1 Consultants + Generative AI to deliver rapid, high-quality results.</p>
+            </div>
+            <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
+              <i className="fa-solid fa-hand-holding-heart text-white-400 text-4xl mb-4"></i>
+              <h3 className="text-xl font-semibold mb-2">Enablement First</h3>
+              <p className="text-gray-400">We leave you fully equipped to keep moving forward, independently.</p>
+            </div>
+          </div>
 
           {/* Services */}
           <div className="grid gap-8 md:grid-cols-3">

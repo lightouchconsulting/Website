@@ -48,7 +48,6 @@ export default function SiteHeader() {
   }, []);
 
   const navLinks = [
-    { href: "/#who", label: "Who We Are" },
     { href: "/#what", label: "What We Do" },
     { href: "/#methods", label: "Methods & Tools" },
     { href: "/#values", label: "Our Values" },
