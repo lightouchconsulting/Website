@@ -6,22 +6,6 @@ subThemes: ["Transition", "Performance Improvement"]
 weekLabel: 2026-W13
 date: "2026-03-24"
 status: published
-sources:
-  - title: "How to deploy Pi-Hole with Docker and stop ads on every device on your LAN"
-    url: https://thenewstack.io/pihole-docker-network-adblocking/
-    source: "The New Stack"
-  - title: "I replaced my Sonos Era speakers with an unlikely alternative - and didn't miss a beat"
-    url: https://www.zdnet.com/article/denon-home-200-home-400-review/
-    source: "Latest news"
-  - title: "Opera GX for Linux is way more than great gaming browser - here's why"
-    url: https://www.zdnet.com/article/opera-gx-browser-linux/
-    source: "Latest news"
-  - title: "Best Premium Soundbars: Dolby Atmos, Hi-Res Audio, and More"
-    url: https://www.wired.com/gallery/best-premium-soundbars/
-    source: "WIRED"
-  - title: "The Trip to the Far Side of the Moon"
-    url: https://www.wired.com/story/the-trip-to-the-far-side-of-the-moon-nasa-artemis/
-    source: "WIRED"
 ---
 
 # Optimising Operations: Harnessing Technology for Seamless Experiences
