@@ -30,21 +30,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         })}
       </div>
 
-      {post.sources.length > 0 && (
-        <div className="mt-12 border-t border-gray-800 pt-6">
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-3">Sources</h3>
-          <ul className="space-y-2">
-            {post.sources.map((s, i) => (
-              <li key={i} className="text-sm">
-                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white underline">
-                  {s.title}
-                </a>
-                <span className="text-gray-500 ml-2">— {s.source}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   )
 }
