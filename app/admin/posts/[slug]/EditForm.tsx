@@ -9,6 +9,26 @@ export default function EditForm({ slug, initialContent }: { slug: string; initi
   const [error, setError] = useState("")
   const router = useRouter()
 
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to permanently delete this post? This cannot be undone.")) return
+    setStatus("saving")
+    setError("")
+    try {
+      const res = await fetch("/api/blog/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`)
+      router.push("/admin/posts")
+      router.refresh()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error")
+      setStatus("error")
+    }
+  }
+
   const handleSave = async () => {
     setStatus("saving")
     setError("")
@@ -36,16 +56,25 @@ export default function EditForm({ slug, initialContent }: { slug: string; initi
         className="w-full h-[60vh] bg-gray-900 text-gray-100 border border-gray-700 rounded p-4 font-mono text-sm focus:outline-none focus:border-white resize-y"
         spellCheck={false}
       />
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleSave}
+            disabled={status === "saving"}
+            className="px-4 py-2 bg-yellow-400 text-black font-semibold rounded hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            {status === "saving" ? "Saving…" : "Save Changes"}
+          </button>
+          {status === "saved" && <p className="text-sm text-green-400">Saved!</p>}
+          {status === "error" && <p className="text-sm text-red-400">{error}</p>}
+        </div>
         <button
-          onClick={handleSave}
+          onClick={handleDelete}
           disabled={status === "saving"}
-          className="px-4 py-2 bg-yellow-400 text-black font-semibold rounded hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          className="px-4 py-2 bg-red-700 text-white font-semibold rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          {status === "saving" ? "Saving…" : "Save Changes"}
+          Delete Post
         </button>
-        {status === "saved" && <p className="text-sm text-green-400">Saved!</p>}
-        {status === "error" && <p className="text-sm text-red-400">{error}</p>}
       </div>
     </div>
   )
