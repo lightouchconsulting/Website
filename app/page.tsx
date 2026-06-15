@@ -111,7 +111,7 @@ export default function Home() {
             We are the last<br />consultants you will need.
           </h1>
           <p className="text-xl text-white mt-4">
-            GenAI-native, challenger management consultancy for CIO&apos;s and technology leaders.
+            GenAI-native, challenger management consultancy for CIOs and technology leaders.
           </p>
           <a
             href="#contact"
