@@ -212,11 +212,11 @@ export default function Home() {
                 <i className="fa-solid fa-compass-drafting text-white-400 text-3xl"></i>
                 <h3 className="text-xl font-semibold">Our approach</h3>
               </div>
-              <ul className="list-disc list-inside space-y-3 text-gray-300">
-                <li>Alignment with standards: ISO, ITIL, PMI where relevant.</li>
-                <li>Proprietary methods from Tier 1 experience for complex challenges.</li>
-                <li>User-centred, collaborative delivery with stakeholder engagement.</li>
-                <li>Adaptability: every method tailored to your context.</li>
+              <ul className="space-y-3 text-gray-300">
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Alignment with standards: ISO, ITIL, PMI where relevant.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Proprietary methods from Tier 1 experience for complex challenges.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>User-centred, collaborative delivery with stakeholder engagement.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Adaptability: every method tailored to your context.</li>
               </ul>
             </div>
 
@@ -226,11 +226,11 @@ export default function Home() {
                 <i className="fa-solid fa-toolbox text-white-400 text-3xl"></i>
                 <h3 className="text-xl font-semibold">Our tools</h3>
               </div>
-              <ul className="list-disc list-inside space-y-3 text-gray-300">
-                <li>Leading GenAI platforms producing consultant-level outputs up to 10&times; faster.</li>
-                <li>Embedded methods: pre-configured frameworks your team can keep using.</li>
-                <li>Built-in collaboration for stakeholder feedback and engagement.</li>
-                <li>Ongoing access: continue using our methods and tools independently.</li>
+              <ul className="space-y-3 text-gray-300">
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Leading GenAI platforms producing consultant-level outputs up to 10&times; faster.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Embedded methods: pre-configured frameworks your team can keep using.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Built-in collaboration for stakeholder feedback and engagement.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Ongoing access: continue using our methods and tools independently.</li>
               </ul>
             </div>
           </div>
