@@ -17,6 +17,10 @@ export default function AdminDashboard() {
           <h2 className="font-semibold text-white">Projects</h2>
           <p className="text-sm text-gray-400">Manage client project spaces and team members</p>
         </Link>
+        <a href="https://vercel.com/lightouchconsulting/website/analytics" target="_blank" rel="noopener noreferrer" className="block p-4 border border-gray-700 rounded hover:border-white transition">
+          <h2 className="font-semibold text-white">Analytics ↗</h2>
+          <p className="text-sm text-gray-400">View visitor stats, page views, and referrers on Vercel</p>
+        </a>
       </div>
     </div>
   )
