@@ -202,12 +202,12 @@ export default function Home() {
                 <i className="fa-solid fa-compass-drafting text-white-400 text-3xl"></i>
                 <h3 className="text-xl font-semibold">Our approach</h3>
               </div>
-              <ul className="space-y-3 text-gray-300" style={{ paddingLeft: 0 }}>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Alignment with standards: ISO, ITIL, PMI where relevant.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Proprietary methods from Tier 1 experience for complex challenges.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>User-centred, collaborative delivery with stakeholder engagement.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Adaptability: every method tailored to your context.</li>
-              </ul>
+              <div className="space-y-3 text-gray-300">
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Alignment with standards: ISO, ITIL, PMI where relevant.</span></div>
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Proprietary methods from Tier 1 experience for complex challenges.</span></div>
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>User-centred, collaborative delivery with stakeholder engagement.</span></div>
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Adaptability: every method tailored to your context.</span></div>
+              </div>
             </div>
 
             {/* Tools */}
@@ -216,12 +216,12 @@ export default function Home() {
                 <i className="fa-solid fa-toolbox text-white-400 text-3xl"></i>
                 <h3 className="text-xl font-semibold">Our tools</h3>
               </div>
-              <ul className="space-y-3 text-gray-300" style={{ paddingLeft: 0 }}>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Leading GenAI platforms producing consultant-level outputs up to 10&times; faster.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Embedded methods: pre-configured frameworks your team can keep using.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Built-in collaboration for stakeholder feedback and engagement.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Ongoing access: continue using our methods and tools independently.</li>
-              </ul>
+              <div className="space-y-3 text-gray-300">
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Leading GenAI platforms producing consultant-level outputs up to 10&times; faster.</span></div>
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Embedded methods: pre-configured frameworks your team can keep using.</span></div>
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Built-in collaboration for stakeholder feedback and engagement.</span></div>
+                <div className="flex items-center gap-2"><i className="fa-regular fa-circle-check text-white-400 flex-shrink-0"></i><span>Ongoing access: continue using our methods and tools independently.</span></div>
+              </div>
             </div>
           </div>
 
