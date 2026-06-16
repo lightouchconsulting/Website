@@ -108,7 +108,7 @@ export default function Home() {
         {/* Hero text */}
         <div className="relative z-20 text-center">
           <h1 className="text-6xl md:text-7xl font-extrabold text-white">
-            We are the last<br />consultants you will need.
+            We may be the last<br />consultants you will need.
           </h1>
           <p className="text-xl text-white mt-4">
             GenAI-native, challenger management consultancy for CIOs and technology leaders.
