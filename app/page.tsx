@@ -235,6 +235,34 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Technology Carousel */}
+          <div className="mt-12 overflow-hidden">
+            <p className="text-center text-xs text-gray-500 uppercase tracking-widest mb-8">Technologies we work with</p>
+            <div className="marquee-track">
+              {[
+                { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/white' },
+                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.simpleicons.org/openai/white' },
+                { name: 'Microsoft Copilot',  src: 'https://cdn.simpleicons.org/microsoftcopilot/white' },
+                { name: 'Google Gemini',      src: 'https://cdn.simpleicons.org/googlegemini/white' },
+                { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity/white' },
+                { name: 'Microsoft Azure',    src: 'https://cdn.simpleicons.org/microsoftazure/white' },
+                { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface/white' },
+                { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/white' },
+                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.simpleicons.org/openai/white' },
+                { name: 'Microsoft Copilot',  src: 'https://cdn.simpleicons.org/microsoftcopilot/white' },
+                { name: 'Google Gemini',      src: 'https://cdn.simpleicons.org/googlegemini/white' },
+                { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity/white' },
+                { name: 'Microsoft Azure',    src: 'https://cdn.simpleicons.org/microsoftazure/white' },
+                { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface/white' },
+              ].map((logo, i) => (
+                <div key={i} className="flex flex-col items-center gap-3 mx-12">
+                  <img src={logo.src} alt={logo.name} className="h-10 w-10 object-contain opacity-60 hover:opacity-100 transition" />
+                  <span className="text-xs text-gray-400 whitespace-nowrap">{logo.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="text-center mt-10">
             <a href="#contact" className="btn-primary">Find out how we work</a>
           </div>
