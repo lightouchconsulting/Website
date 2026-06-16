@@ -164,7 +164,7 @@ export default function Home() {
             <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
               <i className="fa-solid fa-bolt text-white-400 text-4xl mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">GenAI Adoption Support</h3>
-              <p className="text-gray-400">Implementation and enablement for your teams, powered by <span className="font-semibold">Vivet.ai</span>.</p>
+              <p className="text-gray-400">Implementation and enablement for your teams to adopt GenAI effectively.</p>
             </div>
           </div>
 
@@ -227,10 +227,10 @@ export default function Home() {
                 <h3 className="text-xl font-semibold">Our tools</h3>
               </div>
               <ul className="space-y-3 text-gray-300">
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i><span className="font-semibold">Vivet.ai</span>: GenAI platform producing consultant-level outputs up to 10&times; faster.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Leading GenAI platforms producing consultant-level outputs up to 10&times; faster.</li>
                 <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Embedded methods: pre-configured frameworks your team can keep using.</li>
                 <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Built-in collaboration for stakeholder feedback and engagement.</li>
-                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Ongoing access: continue using Vivet.ai and our methods independently.</li>
+                <li><i className="fa-regular fa-circle-check text-white-400 mr-2"></i>Ongoing access: continue using our methods and tools independently.</li>
               </ul>
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function Home() {
             <div className="fade-card p-6 bg-black rounded-2xl shadow-lg">
               <i className="fa-solid fa-lightbulb text-white-400 text-4xl mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Innovation</h3>
-              <p className="text-gray-400">We harness Generative AI and build custom solutions like Vivet.ai into our work. <span className="italic">(e.g. each engagement leverages the latest AI tools.)</span></p>
+              <p className="text-gray-400">We harness Generative AI and embed the latest AI tools into our work. <span className="italic">(e.g. each engagement leverages cutting-edge AI capabilities.)</span></p>
             </div>
             <div className="fade-card p-6 bg-black rounded-2xl shadow-lg">
               <i className="fa-solid fa-user-graduate text-white-400 text-4xl mb-4"></i>
