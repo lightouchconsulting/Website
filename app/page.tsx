@@ -168,16 +168,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Method highlight */}
-          <div className="fade-card mt-8 p-6 bg-gray-900 rounded-2xl shadow-lg">
-            <div className="flex items-start gap-4">
-              <i className="fa-solid fa-stopwatch text-white-400 text-3xl"></i>
-              <div>
-                <h4 className="text-lg font-semibold mb-1">The Lightouch Method</h4>
-                <p className="text-gray-400">High-value GenAI use cases identified and deployed in just six weeks.</p>
-              </div>
-            </div>
-          </div>
 
           {/* Key benefits */}
           <div className="mt-10">
