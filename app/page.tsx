@@ -226,7 +226,7 @@ export default function Home() {
           </div>
 
           {/* Technology Carousel */}
-          <div className="mt-12 -mx-6 bg-white py-8 overflow-hidden">
+          <div className="mt-12 bg-white py-8 overflow-hidden rounded-2xl">
             <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-8">Technologies we work with</p>
             <div className="marquee-track">
               {[
