@@ -226,8 +226,8 @@ export default function Home() {
           </div>
 
           {/* Technology Carousel */}
-          <div className="mt-12 bg-white py-8 overflow-hidden rounded-2xl">
-            <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-8">Technologies we work with</p>
+          <div className="mt-12 bg-white py-5 overflow-hidden rounded-2xl">
+            <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-4">Technologies we work with</p>
             <div className="marquee-track">
               {[
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/CC785C',                                         cls: '' },
@@ -245,8 +245,8 @@ export default function Home() {
                 { name: 'Microsoft Azure',    src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftazure.svg',             cls: 'icon-azure' },
                 { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface',                                              cls: '' },
               ].map((logo, i) => (
-                <div key={i} className="flex flex-col items-center gap-3 mx-12">
-                  <img src={logo.src} alt={logo.name} className={`${logo.cls} h-10 w-10 object-contain opacity-80 hover:opacity-100 transition`} />
+                <div key={i} className="flex flex-col items-center gap-2 mx-12">
+                  <img src={logo.src} alt={logo.name} className={`${logo.cls} h-7 w-7 object-contain opacity-80 hover:opacity-100 transition`} />
                   <span className="text-xs text-gray-500 whitespace-nowrap">{logo.name}</span>
                 </div>
               ))}
