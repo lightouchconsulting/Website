@@ -384,8 +384,9 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 py-6 text-center text-gray-500 text-sm">
-        <div className="mb-3">
+      <footer className="bg-gray-900 py-6 text-gray-500 text-sm">
+        <div className="flex items-center justify-center gap-4">
+          <span>&copy; <span ref={yearRef} id="year"></span> Lightouch Consulting. All rights reserved.</span>
           <a
             href="https://www.linkedin.com/company/lightouch-consulting/?viewAsMember=true"
             target="_blank"
@@ -396,11 +397,10 @@ export default function Home() {
             <img
               src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg"
               alt="LinkedIn"
-              style={{ filter: 'brightness(0) invert(1)', width: 28, height: 28 }}
+              style={{ filter: 'brightness(0) invert(1)', width: 20, height: 20 }}
             />
           </a>
         </div>
-        &copy; <span ref={yearRef} id="year"></span> Lightouch Consulting. All rights reserved.
       </footer>
     </>
   );
