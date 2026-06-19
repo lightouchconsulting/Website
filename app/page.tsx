@@ -237,6 +237,7 @@ export default function Home() {
                 { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity', cls: '' },
                 { name: 'Microsoft Azure',    src: '/logos/microsoft-azure.svg', cls: '' },
                 { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface', cls: '' },
+                { name: 'Alphient AI',        src: '/logos/alphient-ai.png', cls: '' },
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/D97757', cls: '' },
                 { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg', cls: 'icon-dark' },
                 { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg', cls: 'icon-dark' },
@@ -244,6 +245,7 @@ export default function Home() {
                 { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity', cls: '' },
                 { name: 'Microsoft Azure',    src: '/logos/microsoft-azure.svg', cls: '' },
                 { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface', cls: '' },
+                { name: 'Alphient AI',        src: '/logos/alphient-ai.png', cls: '' },
               ].map((logo, i) => (
                 <div key={i} className="flex flex-col items-center gap-2 mx-12">
                   <img src={logo.src} alt={logo.name} className={`${logo.cls} h-7 w-7 object-contain opacity-80 hover:opacity-100 transition`} />
