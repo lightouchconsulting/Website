@@ -385,6 +385,17 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-900 py-6 text-center text-gray-500 text-sm">
+        <div className="mb-3">
+          <a
+            href="https://www.linkedin.com/company/lightouch-consulting/?viewAsMember=true"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Lightouch Consulting on LinkedIn"
+            className="inline-block text-gray-400 hover:text-blue-400 transition"
+          >
+            <i className="fa-brands fa-linkedin text-3xl"></i>
+          </a>
+        </div>
         &copy; <span ref={yearRef} id="year"></span> Lightouch Consulting. All rights reserved.
       </footer>
     </>
