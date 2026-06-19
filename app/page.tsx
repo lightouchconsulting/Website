@@ -260,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* Our Values */}
-      <section id="values" className="pt-10 pb-20 bg-gray-900">
+      <section id="values" className="pt-4 pb-20 bg-gray-900">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-4xl font-bold mb-8 text-center">Our Values</h2>
 
