@@ -226,7 +226,7 @@ export default function Home() {
           </div>
 
           {/* Technology Carousel */}
-          <p className="text-center text-gray-300 max-w-3xl mx-auto mt-12 mb-3">Technologies we work with</p>
+          <p className="text-center text-gray-300 max-w-3xl mx-auto mt-12 mb-10">Technologies we work with</p>
           <div className="bg-white py-4 overflow-hidden rounded-2xl">
             <div className="marquee-track">
               {[
