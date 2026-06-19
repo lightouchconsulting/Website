@@ -226,20 +226,20 @@ export default function Home() {
           </div>
 
           {/* Technology Carousel */}
-          <div className="mt-12 overflow-hidden">
-            <p className="text-center text-xs text-gray-500 uppercase tracking-widest mb-8">Technologies we work with</p>
+          <div className="mt-12 -mx-6 bg-white py-8 overflow-hidden">
+            <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-8">Technologies we work with</p>
             <div className="marquee-track">
               {[
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/CC785C',                                         cls: '' },
-                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg',                    cls: 'icon-white' },
-                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg',                 cls: 'icon-white' },
+                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg',                    cls: 'icon-dark' },
+                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg',                 cls: 'icon-dark' },
                 { name: 'Google Gemini',      src: 'https://cdn.simpleicons.org/googlegemini',                                             cls: '' },
                 { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity',                                               cls: '' },
                 { name: 'Microsoft Azure',    src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftazure.svg',             cls: 'icon-azure' },
                 { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface',                                              cls: '' },
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/CC785C',                                         cls: '' },
-                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg',                    cls: 'icon-white' },
-                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg',                 cls: 'icon-white' },
+                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg',                    cls: 'icon-dark' },
+                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg',                 cls: 'icon-dark' },
                 { name: 'Google Gemini',      src: 'https://cdn.simpleicons.org/googlegemini',                                             cls: '' },
                 { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity',                                               cls: '' },
                 { name: 'Microsoft Azure',    src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftazure.svg',             cls: 'icon-azure' },
@@ -247,7 +247,7 @@ export default function Home() {
               ].map((logo, i) => (
                 <div key={i} className="flex flex-col items-center gap-3 mx-12">
                   <img src={logo.src} alt={logo.name} className={`${logo.cls} h-10 w-10 object-contain opacity-80 hover:opacity-100 transition`} />
-                  <span className="text-xs text-gray-400 whitespace-nowrap">{logo.name}</span>
+                  <span className="text-xs text-gray-500 whitespace-nowrap">{logo.name}</span>
                 </div>
               ))}
             </div>
