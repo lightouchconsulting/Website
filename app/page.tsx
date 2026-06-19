@@ -391,9 +391,13 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Lightouch Consulting on LinkedIn"
-            className="inline-block text-gray-400 hover:text-blue-400 transition"
+            className="inline-block opacity-60 hover:opacity-100 transition"
           >
-            <i className="fa-brands fa-linkedin text-3xl"></i>
+            <img
+              src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg"
+              alt="LinkedIn"
+              style={{ filter: 'brightness(0) invert(1)', width: 28, height: 28 }}
+            />
           </a>
         </div>
         &copy; <span ref={yearRef} id="year"></span> Lightouch Consulting. All rights reserved.
