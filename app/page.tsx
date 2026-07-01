@@ -227,7 +227,7 @@ export default function Home() {
 
           {/* Technology Carousel */}
           <p className="text-center text-gray-300 max-w-3xl mx-auto mt-12 mb-10">Technologies we work with</p>
-          <div className="bg-black py-4 overflow-hidden rounded-2xl">
+          <div className="bg-gray-900 py-4 overflow-hidden rounded-2xl">
             <div className="marquee-track">
               {[
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/D97757', cls: '' },
