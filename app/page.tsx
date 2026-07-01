@@ -256,7 +256,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-10">
-            <a href="#contact" className="inline-flex items-center justify-content px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition">Find out how we work</a>
+            <a href="#contact" className="inline-flex items-center justify-content px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition">Find out how we work</a>
           </div>
         </div>
       </section>
