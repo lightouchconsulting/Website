@@ -227,20 +227,20 @@ export default function Home() {
 
           {/* Technology Carousel */}
           <p className="text-center text-gray-300 max-w-3xl mx-auto mt-12 mb-10">Technologies we work with</p>
-          <div className="bg-white py-4 overflow-hidden rounded-2xl">
+          <div className="bg-black py-4 overflow-hidden rounded-2xl">
             <div className="marquee-track">
               {[
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/D97757', cls: '' },
-                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg', cls: 'icon-dark' },
-                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg', cls: 'icon-dark' },
+                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg', cls: 'icon-white' },
+                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg', cls: 'icon-white' },
                 { name: 'Google Gemini',      src: '/logos/google-gemini.svg', cls: '' },
                 { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity', cls: '' },
                 { name: 'Microsoft Azure',    src: '/logos/microsoft-azure.svg', cls: '' },
                 { name: 'Hugging Face',       src: 'https://cdn.simpleicons.org/huggingface', cls: '' },
                 { name: 'Alphient AI',        src: '/logos/alphient-ai.png', cls: '' },
                 { name: 'Claude / Anthropic', src: 'https://cdn.simpleicons.org/anthropic/D97757', cls: '' },
-                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg', cls: 'icon-dark' },
-                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg', cls: 'icon-dark' },
+                { name: 'ChatGPT / OpenAI',   src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg', cls: 'icon-white' },
+                { name: 'Microsoft Copilot',  src: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg', cls: 'icon-white' },
                 { name: 'Google Gemini',      src: '/logos/google-gemini.svg', cls: '' },
                 { name: 'Perplexity',         src: 'https://cdn.simpleicons.org/perplexity', cls: '' },
                 { name: 'Microsoft Azure',    src: '/logos/microsoft-azure.svg', cls: '' },
