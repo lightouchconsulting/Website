@@ -55,9 +55,13 @@ export async function getPosts(): Promise<Post[]> {
       .filter((p): p is Post => p !== null && p.status === 'published')
       .sort((a, b) => a.date.localeCompare(b.date))
 
-    // Assign sequential issue numbers oldest-first, then return newest-first
+    // Assign sequential issue numbers per theme, oldest-first, then return newest-first
+    const counts: Record<string, number> = {}
     return published
-      .map((p, i) => ({ ...p, issueNumber: i + 1 }))
+      .map(p => {
+        counts[p.theme] = (counts[p.theme] ?? 0) + 1
+        return { ...p, issueNumber: counts[p.theme] }
+      })
       .reverse()
   } catch {
     return []
