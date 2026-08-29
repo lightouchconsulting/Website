@@ -9,7 +9,7 @@ export default async function BlogPage() {
   return (
     <div className="max-w-3xl mx-auto py-16 px-4">
       <h1 className="text-3xl font-bold text-white mb-2">Insights</h1>
-      <p className="text-gray-400 mb-10">Weekly perspectives for technology leaders.</p>
+      <p className="text-gray-400 mb-10">Perspectives for technology leaders.</p>
 
       {posts.length === 0 && (
         <p className="text-gray-500">No posts published yet.</p>
