@@ -1,6 +1,7 @@
 import { scrapeFeeds } from './scraper'
 import { classifyArticles } from './classifier'
 import { synthesizePosts } from './synthesizer'
+import { groundPost } from './verifier'
 import { Octokit } from '@octokit/rest'
 import path from 'path'
 import fs from 'fs'
@@ -115,7 +116,16 @@ async function main() {
   const posts = await synthesizePosts(classified, themesConfig.themes, weekLabel)
   console.log(`[generator] Generated ${posts.length} posts`)
 
-  await Promise.all(posts.map(async (post) => {
+  console.log('[generator] Verifying grounding...')
+  const groundedPosts = await Promise.all(posts.map(async (post) => {
+    const result = await groundPost(post.content, post.sourceContext)
+    console.log(
+      `[generator] Grounding ${post.theme}: ${result.grounded ? 'clean' : 'unresolved'} after ${result.attempts} attempt(s)`
+    )
+    return { ...post, content: result.content }
+  }))
+
+  await Promise.all(groundedPosts.map(async (post) => {
     const filename = `${post.theme.toLowerCase()}.md`
     const filePath = `content/drafts/${date}/${filename}`
     const fileContent = buildFrontmatter({ ...post, date }) + post.content
