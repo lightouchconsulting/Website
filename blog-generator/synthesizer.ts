@@ -10,6 +10,7 @@ export interface DraftPost {
   content: string
   sources: { title: string; url: string; source: string }[]
   weekLabel: string
+  sourceContext: string
 }
 
 export async function synthesizePosts(
@@ -81,7 +82,7 @@ Write the article now:`
           .slice(0, 3)
 
         console.log(`[synthesizer] Done: ${theme.name}`)
-        return { theme: theme.name, subThemes, title, content: text, sources, weekLabel } as DraftPost
+        return { theme: theme.name, subThemes, title, content: text, sources, weekLabel, sourceContext } as DraftPost
       } catch (err) {
         console.error(`[synthesizer] Failed for theme ${theme.name}:`, (err as Error).message)
         return null
