@@ -30,7 +30,7 @@ Respond with a JSON array of strings only, one per unsupported claim, quoting th
 Only include the JSON array in your response, no other text.`
 
   const response = await client.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: 'openai/gpt-oss-120b',
     messages: [{ role: 'user', content: prompt }],
     max_tokens: 1024,
     temperature: 0,
@@ -65,7 +65,7 @@ Rewrite the article, removing or generalising ONLY these specific claims so the 
 Return ONLY the full revised Markdown article, no preamble.`
 
   const response = await client.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: 'openai/gpt-oss-120b',
     messages: [{ role: 'user', content: prompt }],
     max_tokens: 2048,
     temperature: 0,
