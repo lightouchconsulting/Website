@@ -150,10 +150,17 @@ async function main() {
     }
   }))
 
-  // Save all used URLs (existing + newly scraped fresh articles)
-  const updatedUrls = new Set([...usedUrls, ...freshArticles.map(a => a.link)])
-  await saveUsedUrls(octokit, owner, repo, updatedUrls)
-  console.log(`[generator] Saved ${updatedUrls.size} used URLs`)
+  // Only mark this run's scraped articles as used if at least one post was
+  // actually generated — otherwise a total pipeline failure (e.g. the LLM
+  // API rejecting every request) would permanently blacklist articles that
+  // never produced any content.
+  if (posts.length > 0) {
+    const updatedUrls = new Set([...usedUrls, ...freshArticles.map(a => a.link)])
+    await saveUsedUrls(octokit, owner, repo, updatedUrls)
+    console.log(`[generator] Saved ${updatedUrls.size} used URLs`)
+  } else {
+    console.log('[generator] No posts generated — not marking articles as used')
+  }
 
   console.log('[generator] Done.')
 }
