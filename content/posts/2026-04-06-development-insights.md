@@ -24,34 +24,29 @@ sources:
     source: "The New Stack"
 ---
 
-Faster Code Isn't Faster Delivery
-
+#Faster Code Isn't Faster Delivery
 Most AI coding tools speed up one stage of delivery: writing code. But software moves through many stages, and the slowest one sets the pace. If coding wasn't the slowest, speeding it up may do little for delivery. AI can also change where the slowest stage is, and finding out where it is now means measuring the whole flow.
 
 McKinsey's May 2026 survey of 334 product and engineering leaders shows how uneven the results are. Only 25% of director-level-and-above respondents reported meaningful or top AI acceleration, which McKinsey defines as more than a quarter of their teams achieving twofold or greater productivity gains, and 30% reported that team productivity had fallen. Those are self-reported views, not measurements, which is a reason to measure the flow instead of relying on perception.
 
-Where the Work Goes Next
-
+##Where the Work Goes Next
 When one stage of a pipeline gets much cheaper, the work it produces still has to get through the stages after it. It may queue at the next stage that can't keep pace, or it may have been queuing there already and is now easier to see. If AI doubles the number of pull requests and the number of qualified reviewers stays the same, review becomes the bottleneck.
 
 Security shows the problem clearly. AI makes code cheaper to produce, but the organisation still has to verify it. If security review depends on a small number of specialists, faster generation can lengthen the queue rather than shorten it.
 
 The slowest stage in your pipeline, your constraint, may not be review or security at all. It could be requirements, test environments, release approvals, or a decision that waits on one busy person. Find it first. Then decide the fix: more automation, a change in process or controls, or a different use of the people you already have.
 
-Who Reviews What AI Writes
-
+##Who Reviews What AI Writes
 Review capacity is one place this shows up. Junior engineers have traditionally learned by doing work that AI now does for them. How do they build the judgement to review what AI produces? CIOs should treat that as a delivery question as well as a people one.
 
 AI can generate the code, but accountability can't be delegated to the model. The person approving a change should be able to explain its architecture, assumptions and risks, ideally in the pull request itself. Juniors also need regular, structured practice at the foundations, not only supervision of generated output.
 
-What Good Looks Like
-
+##What Good Looks Like
 Lines of code, licences issued and prompts sent tell you whether tools are being used. They say nothing about whether delivery has improved. McKinsey found that lower-performing organisations leaned disproportionately on adoption figures. Deployment frequency, change failure rate, time to restore service and customer experience are better guides because they measure what reached production and how it behaved.
 
 Quality needs its own measures, since speed gains say little about what shipped. That puts production telemetry and real-user data in the development loop, not only in operations.
 
-Your Next Step
-
+##Your Next Step
 Begin with a two-week diagnostic of one team and one service. It won't prove anything across the organisation, but it will show where to look.
 
 First, establish a directional baseline. Where available, pull historical data from before AI use became widespread in the team: work tracking, Git history, CI/CD and incident records. If adoption was gradual, treat the history as directional, not a clean control, and don't pretend it proves AI caused any change. Team composition, product mix, major incidents and architecture changes all matter.
