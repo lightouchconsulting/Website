@@ -266,16 +266,6 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-2">Client Enablement</h3>
               <p className="text-gray-400">We ensure your teams can keep generating value long after we&apos;ve wrapped up. <span className="italic">(e.g. you retain access to our frameworks and platforms.)</span></p>
             </div>
-            <div className="fade-card p-6 bg-black rounded-2xl shadow-lg">
-              <i className="fa-solid fa-briefcase text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Professionalism &amp; Experience</h3>
-              <p className="text-gray-400">Led by seasoned Tier 1 consultants. <span className="italic">(e.g. every client gets senior attention.)</span></p>
-            </div>
-            <div className="fade-card p-6 bg-black rounded-2xl shadow-lg md:col-span-2">
-              <i className="fa-solid fa-person-running text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Adaptability</h3>
-              <p className="text-gray-400">We flex to your needs and move quickly. <span className="italic">(e.g. our approach is tailored for each engagement.)</span></p>
-            </div>
           </div>
 
           <div className="text-center mt-10">
