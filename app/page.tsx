@@ -157,11 +157,17 @@ export default function Home() {
           <div className="mt-10">
             <h3 className="text-2xl font-bold mb-4 text-center">Key benefits</h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center">Faster results</div>
-              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center">Cost savings</div>
-              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center">Independence after delivery</div>
-              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center">Practical, actionable outcomes</div>
-              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center">Direct access to experienced consultants</div>
+              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center min-h-[7.5rem] flex flex-col items-center justify-center">
+                <div>Faster results</div>
+                <div className="text-4xl font-bold mt-2">x10</div>
+              </div>
+              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center min-h-[7.5rem] flex flex-col items-center justify-center">
+                <div>Cost savings</div>
+                <div className="text-4xl font-bold mt-2">x10</div>
+              </div>
+              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center min-h-[7.5rem] flex flex-col items-center justify-center">Independence after delivery</div>
+              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center min-h-[7.5rem] flex flex-col items-center justify-center">Practical, actionable outcomes</div>
+              <div className="fade-card bg-gray-900 rounded-xl p-4 text-center min-h-[7.5rem] flex flex-col items-center justify-center">Direct access to experienced consultants</div>
             </div>
           </div>
 
