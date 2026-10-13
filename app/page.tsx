@@ -154,7 +154,7 @@ export default function Home() {
 
 
           {/* Key benefits */}
-          <div className="mt-10">
+          <div className="mt-20">
             <h3 className="text-2xl font-bold mb-4 text-center">Key benefits</h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               <div className="fade-card bg-gray-900 rounded-xl p-4 text-center min-h-[7.5rem] flex flex-col items-center justify-center">
