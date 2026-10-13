@@ -130,41 +130,25 @@ export default function Home() {
             Lightouch helps CIOs and technology leaders achieve rapid, high-quality results using GenerativeAI.
           </p>
 
-          {/* Who we are cards */}
-          <div className="grid gap-8 md:grid-cols-3 mb-10">
-            <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
-              <i className="fa-solid fa-user-tie text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Built for CIOs</h3>
-              <p className="text-gray-400">A new kind of consultancy for technology leaders who expect more from their advisors.</p>
-            </div>
-            <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
-              <i className="fa-solid fa-robot text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">GenAI + Expertise</h3>
-              <p className="text-gray-400">Tier 1 Consultants + Generative AI to deliver rapid, high-quality results.</p>
-            </div>
-            <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
-              <i className="fa-solid fa-hand-holding-heart text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Enablement First</h3>
-              <p className="text-gray-400">We leave you fully equipped to keep moving forward, independently.</p>
-            </div>
-          </div>
-
           {/* Services */}
           <div className="grid gap-8 md:grid-cols-3">
             <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
               <i className="fa-solid fa-diagram-project text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">Technology &amp; Digital Transformation</h3>
-              <p className="text-gray-400">Roadmaps, transformation programmes, new tech adoption, and project assurance.</p>
+              <h3 className="text-xl font-semibold mb-2">Technology and digital transformation</h3>
+              <p className="text-gray-400">Modernise your technology, streamline operations and unlock new value.</p>
+              <p className="text-sm text-gray-500 mt-2">Examples: cloud, platforms, data, operating model, transformation strategy.</p>
             </div>
             <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
               <i className="fa-solid fa-file-signature text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">GenAI-Enabled Delivery</h3>
-              <p className="text-gray-400">Consultant-grade blueprints, strategies and plans — produced faster and to a higher standard.</p>
+              <h3 className="text-xl font-semibold mb-2">GenAI-enabled consulting and delivery</h3>
+              <p className="text-gray-400">Turn AI potential into real business outcomes, faster.</p>
+              <p className="text-sm text-gray-500 mt-2">Examples: use case discovery, solution design, rapid delivery, change support.</p>
             </div>
             <div className="fade-card p-6 bg-gray-900 rounded-2xl shadow-lg">
               <i className="fa-solid fa-bolt text-white-400 text-4xl mb-4"></i>
-              <h3 className="text-xl font-semibold mb-2">GenAI Adoption Support</h3>
-              <p className="text-gray-400">Implementation and enablement for your teams to adopt GenAI effectively.</p>
+              <h3 className="text-xl font-semibold mb-2">GenAI adoption and enablement</h3>
+              <p className="text-gray-400">Build the skills, processes and culture to adopt and scale GenAI with confidence.</p>
+              <p className="text-sm text-gray-500 mt-2">Examples: enablement programmes, training, governance, operating models.</p>
             </div>
           </div>
 
